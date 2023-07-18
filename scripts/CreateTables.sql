@@ -2,9 +2,11 @@ CREATE TABLE `JobRole` (
 `ID` SMALLINT unsigned AUTO_INCREMENT,
 `Name` VARCHAR(50),
 `Specification` VARCHAR(100),
-`BandLevel` VARCHAR(30),
-`Capability` VARCHAR(30),
-PRIMARY KEY (`ID`)
+`BandID` VARCHAR(30),
+`CapabilityID` SMALLINT unsigned,
+PRIMARY KEY (`ID`),
+FOREIGN KEY `CapabilityID` REFERENCES `Capability`.`ID`,
+FOREIGN KEY `CapabilityID` REFERENCES `Capability`.`ID`
 );
 
 
