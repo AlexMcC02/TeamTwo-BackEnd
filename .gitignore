@@ -39,3 +39,6 @@ build/
 
 ### Database Properties
 db.properties
+
+### idea folder ###
+.idea
