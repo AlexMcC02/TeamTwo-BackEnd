@@ -20,8 +20,7 @@ public class JobRoleController {
     private static JobRoleService jobRoleService;
 
     public JobRoleController() {
-        DatabaseConnector databaseConnector = new DatabaseConnector();
-        jobRoleService = new JobRoleService(new JobRoleDao(), databaseConnector);
+        jobRoleService = new JobRoleService(new JobRoleDao(), new DatabaseConnector());
     }
 
     @GET
