@@ -5,22 +5,23 @@ import org.kainos.ea.exception.FailedToGetCapabilityException;
 import org.kainos.ea.exception.FailedToGetJobRolesException;
 import org.kainos.ea.model.Capability;
 import org.kainos.ea.model.JobRole;
+import org.kainos.ea.util.DatabaseConnector;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class JobRoleService {
 
-    private JobRoleDao jobRoleDao = new JobRoleDao();
+    public JobRoleDao jobRoleDao;
+    public DatabaseConnector databaseConnector;
 
-    public List<JobRole> getAllJobRoles() throws FailedToGetJobRolesException {
-        try {
-            List<JobRole> jobRoleList = jobRoleDao.getAllJobRoles();
-            return jobRoleList;
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            throw new FailedToGetJobRolesException();
-        }
+    public JobRoleService(JobRoleDao jobRoleDao, DatabaseConnector databaseConnector) {
+        this.jobRoleDao = jobRoleDao;
+        this.databaseConnector = databaseConnector;
+    }
+
+    public List<JobRole> getAllJobRoles() throws FailedToGetJobRolesException, SQLException {
+        return jobRoleDao.getAllJobRoles(databaseConnector.getConnection());
     }
 
     public List<Capability> getCapability() throws FailedToGetCapabilityException {
