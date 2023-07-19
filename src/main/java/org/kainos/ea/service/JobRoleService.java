@@ -24,13 +24,7 @@ public class JobRoleService {
         return jobRoleDao.getAllJobRoles(databaseConnector.getConnection());
     }
 
-    public List<Capability> getCapability() throws FailedToGetCapabilityException {
-        try {
-            List<Capability> capabilityList = jobRoleDao.getCapability();
-            return capabilityList;
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            throw new FailedToGetCapabilityException();
-        }
+    public List<Capability> getCapability() throws FailedToGetCapabilityException, SQLException {
+        return jobRoleDao.getCapability(databaseConnector.getConnection());
     }
 }

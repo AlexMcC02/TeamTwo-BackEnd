@@ -46,7 +46,7 @@ public class JobRoleController {
 
         try {
             return Response.ok(jobRoleService.getCapability()).build();
-        } catch (FailedToGetCapabilityException e) {
+        } catch (FailedToGetCapabilityException | SQLException e) {
             System.err.println(e.getMessage());
 
             return Response.serverError().build();

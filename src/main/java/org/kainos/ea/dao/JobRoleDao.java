@@ -37,8 +37,7 @@ public class JobRoleDao {
 
     }
 
-    public List<Capability> getCapability() throws SQLException {
-        Connection c =databaseConnector.getConnection();
+    public List<Capability> getCapability(Connection c) throws SQLException {
         Statement st = c.createStatement();
 
         ResultSet rs = st.executeQuery("SELECT `JobRole`.Name as 'Role Name', `Capability`.Name as 'Capability' FROM `Capability` " +
