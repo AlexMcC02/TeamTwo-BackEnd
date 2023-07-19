@@ -9,7 +9,7 @@ import java.util.Properties;
 public class DatabaseConnector {
     private static Connection conn;
 
-    public static Connection getConnection() throws SQLException {
+    public Connection getConnection() throws SQLException {
         String user, password, host, name;
 
         if (conn != null && !conn.isClosed()) { return conn; }
