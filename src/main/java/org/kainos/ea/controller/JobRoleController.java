@@ -30,7 +30,7 @@ public class JobRoleController {
 
         try {
             return Response.ok(jobRoleService.getAllJobRoles()).build();
-        } catch (FailedToGetJobRolesException | SQLException e) {
+        } catch (FailedToGetJobRolesException e) {
             System.err.println(e.getMessage());
 
             return Response.serverError().build();
