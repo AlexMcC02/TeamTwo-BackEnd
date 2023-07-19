@@ -1,5 +1,6 @@
 package org.kainos.ea.dao;
 
+import org.kainos.ea.model.Capability;
 import org.kainos.ea.model.JobRole;
 import org.kainos.ea.util.DatabaseConnector;
 
@@ -37,4 +38,22 @@ public class JobRoleDao {
 
     }
 
+    public List<Capability> getCapability() throws SQLException {
+        Connection c =databaseConnector.getConnection();
+        Statement st = c.createStatement();
+
+        ResultSet rs = st.executeQuery("SELECT `JobRole`.Name as 'Role Name', `Capability`.Name as 'Capability' FROM `Capability` " +
+                "JOIN `JobRole` ON `Capability`.ID = `JobRole`.CapabilityID;");
+
+        List<Capability> capabilityList = new ArrayList<>();
+
+        while (rs.next()) {
+            Capability capability = new Capability(
+                    rs.getString("Role Name"),
+                    rs.getString("Capability")
+            );
+            capabilityList.add(capability);
+        }
+        return capabilityList;
+    }
 }
