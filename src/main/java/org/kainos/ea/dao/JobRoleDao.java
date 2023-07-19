@@ -1,7 +1,6 @@
 package org.kainos.ea.dao;
 
 import org.kainos.ea.model.JobRole;
-import org.kainos.ea.util.DatabaseConnector;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -12,10 +11,7 @@ import java.util.List;
 
 public class JobRoleDao {
 
-    private DatabaseConnector databaseConnector = new DatabaseConnector();
-
-    public List<JobRole> getAllJobRoles() throws SQLException {
-        Connection c =databaseConnector.getConnection();
+    public List<JobRole> getAllJobRoles(Connection c) throws SQLException {
         Statement st = c.createStatement();
 
         ResultSet rs = st.executeQuery("SELECT * FROM `JobRole`;");
