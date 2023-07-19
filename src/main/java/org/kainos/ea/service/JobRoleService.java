@@ -21,7 +21,8 @@ public class JobRoleService {
         try {
             return jobRoleDao.getAllJobRoles(databaseConnector.getConnection());
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
+            throw new FailedToGetJobRolesException();
         }
     }
 
