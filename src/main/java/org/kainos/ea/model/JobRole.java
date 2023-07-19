@@ -4,15 +4,11 @@ public class JobRole {
     private int id;
     private String name;
     private String specification;
-    private int BandID;
-    private int CapabilityID;
 
-    public JobRole(int id, String name, String specification, int bandID, int capabilityID) {
+    public JobRole(int id, String name, String specification) {
         this.id = id;
         this.name = name;
         this.specification = specification;
-        BandID = bandID;
-        CapabilityID = capabilityID;
     }
 
     public int getId() {
@@ -39,21 +35,6 @@ public class JobRole {
         this.specification = specification;
     }
 
-    public int getBandID() {
-        return BandID;
-    }
-
-    public void setBandID(int bandID) {
-        BandID = bandID;
-    }
-
-    public int getCapabilityID() {
-        return CapabilityID;
-    }
-
-    public void setCapabilityID(int capabilityID) {
-        CapabilityID = capabilityID;
-    }
 }
 
 
