@@ -21,4 +21,14 @@ public class JobRoleService {
         }
     }
 
+    public JobRole getSpecificationById(int id) throws FailedToGetJobRolesException{
+        try {
+            JobRole Spec = jobRoleDao.getSpecificationById(id);
+            return Spec;
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new FailedToGetJobRolesException();
+        }
+    }
+
 }
