@@ -1,5 +1,6 @@
 package org.kainos.ea.dao;
 
+import org.kainos.ea.exception.FailedToGetValidJobId;
 import org.kainos.ea.model.JobRole;
 import org.kainos.ea.util.DatabaseConnector;
 
@@ -39,7 +40,7 @@ public class JobRoleDao {
     }
 
 
-    public JobRole getSpecificationById(int id) throws SQLException {
+    public JobRole getSpecificationById(int id) throws SQLException, FailedToGetValidJobId {
         Connection c = databaseConnector.getConnection();
         Statement st = c.createStatement();
 
