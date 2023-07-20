@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class DatabaseConnector {
     private static Connection conn;
 
-    public static Connection getConnection() throws SQLException {
+    public Connection getConnection() throws SQLException {
 
         String user = System.getenv("DB_USER");
         String password = System.getenv("DB_PASSWORD");
