@@ -18,7 +18,6 @@ public class DatabaseConnector {
 
         try {
             String connection = "jdbc:mysql://" + host + "/" + name + "?useSSL=false";
-            System.out.println("DEBUG: " + connection);
             conn = DriverManager.getConnection(connection, user, password);
             return conn;
         } catch (Exception e) {

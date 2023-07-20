@@ -28,7 +28,7 @@ public class JobRoleServiceTest {
     Connection conn;
 
     @Test
-    void getJobRoles_shouldReturnListOfJobRoles_whenDaoReturnsListOfJobRoles() throws SQLException, FailedToGetJobRolesException {
+    void getJobRolesShouldReturnListOfJobRolesWhenDaoReturnsListOfJobRoles() throws SQLException, FailedToGetJobRolesException {
         List<JobRole> expected_result = new ArrayList<>();
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
         Mockito.when(jobRoleDao.getAllJobRoles(conn)).thenReturn(expected_result);
@@ -39,12 +39,13 @@ public class JobRoleServiceTest {
     }
 
     @Test
-    void getJobRoles_shouldThrowSQLException_whenDaoThrowsSQLException() throws SQLException {
+    void getJobRolesShouldThrowFailedToGetJobsExceptionWhenDaoThrowsSQLException() throws SQLException {
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
         Mockito.when(jobRoleDao.getAllJobRoles(conn)).thenThrow(SQLException.class);
 
-        assertThrows(SQLException.class,
+        assertThrows(FailedToGetJobRolesException.class,
                 () -> jobRoleService.getAllJobRoles());
+
     }
 
 }
