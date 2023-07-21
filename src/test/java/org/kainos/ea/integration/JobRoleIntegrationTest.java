@@ -21,8 +21,7 @@ public class JobRoleIntegrationTest {
 
     @Test
     void getJobRolesShouldReturnListOfJobRoles() {
-        String url = System.getenv("DB_URL") + "/api/job_roles";
-        System.out.println(url);
+        String url = System.getenv("API_URL") + "/api/job_roles";
         List<JobRole> response = APP.client().target(url)
                 .request()
                 .get(List.class);
