@@ -16,10 +16,10 @@ import javax.ws.rs.core.Response;
 @Path("/api")
 public class JobRoleController {
 
-    private static JobRoleService jobRoleService;
+    private final JobRoleService jobRoleService;
 
-    public JobRoleController() {
-        jobRoleService = new JobRoleService(new JobRoleDao(), new DatabaseConnector());
+    public JobRoleController(JobRoleService jobRoleService) {
+        this.jobRoleService = jobRoleService;
     }
 
     @GET
