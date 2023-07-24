@@ -3,12 +3,6 @@ package org.kainos.ea;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import io.federecio.dropwizard.swagger.SwaggerBundle;
-import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
-import org.kainos.ea.controller.JobRoleController;
-import org.kainos.ea.dao.JobRoleDao;
-import org.kainos.ea.service.JobRoleService;
-import org.kainos.ea.util.DatabaseConnector;
 
 public class DropwizardWebServiceApplication extends Application<DropwizardWebServiceConfiguration> {
 
@@ -23,19 +17,13 @@ public class DropwizardWebServiceApplication extends Application<DropwizardWebSe
 
     @Override
     public void initialize(final Bootstrap<DropwizardWebServiceConfiguration> bootstrap) {
-        bootstrap.addBundle(new SwaggerBundle<DropwizardWebServiceConfiguration>() {
-
-            @Override
-            protected SwaggerBundleConfiguration getSwaggerBundleConfiguration(DropwizardWebServiceConfiguration dropwizardWebServiceConfiguration) {
-                return dropwizardWebServiceConfiguration.getSwagger();
-            }
-        });
+        // TODO: application initialization
     }
 
     @Override
     public void run(final DropwizardWebServiceConfiguration configuration,
                     final Environment environment) {
-        environment.jersey().register(new JobRoleController(new JobRoleService(new JobRoleDao(), new DatabaseConnector())));
+        // TODO: implement application
     }
 
 }
