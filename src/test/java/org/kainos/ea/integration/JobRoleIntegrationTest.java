@@ -32,8 +32,8 @@ public class JobRoleIntegrationTest {
 
     @Test
     void getCapabilityShouldReturnListOfCapabilities() {
-        String url = System.getenv("API_URL") + "/api/capability";
-        List<Capability> response = APP.client().target(url)
+        String Url = System.getenv("API_URL") + "/api/capability";
+        List<Capability> response = APP.client().target(Url)
                 .request()
                 .get(List.class);
 
