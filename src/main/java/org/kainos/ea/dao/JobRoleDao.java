@@ -1,5 +1,6 @@
 package org.kainos.ea.dao;
 
+import org.kainos.ea.model.BandLevel;
 import org.kainos.ea.model.JobRole;
 
 import java.sql.Connection;
@@ -29,6 +30,24 @@ public class JobRoleDao {
 
         return jobRoleList;
 
+    }
+
+    public List<BandLevel> getAllBandLevels(Connection c) throws SQLException {
+        Statement st = c.createStatement();
+
+        ResultSet rs = st.executeQuery("SELECT `JobRole`.Name as 'Role Name', `BandLevel`.Name as 'Band Level' " +
+                "FROM `BandLevel` JOIN `JobRole` ON `BandLevel`.ID = `JobRole`.CapabilityID;");
+
+        List<BandLevel> bandLevelList = new ArrayList<>();
+
+        while (rs.next()) {
+            BandLevel bandLevel = new BandLevel(
+                    rs.getString("Role Name"),
+                    rs.getString("Band Level")
+            );
+            bandLevelList.add(bandLevel);
+        }
+        return bandLevelList;
     }
 
 }

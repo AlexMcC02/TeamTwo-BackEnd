@@ -2,6 +2,7 @@ package org.kainos.ea.controller;
 
 import io.swagger.annotations.Api;
 import org.kainos.ea.dao.JobRoleDao;
+import org.kainos.ea.exception.FailedToGetBandLevelException;
 import org.kainos.ea.exception.FailedToGetJobRolesException;
 import org.kainos.ea.service.JobRoleService;
 import org.kainos.ea.util.DatabaseConnector;
@@ -35,4 +36,19 @@ public class JobRoleController {
             return Response.serverError().build();
         }
     }
+
+    @GET
+    @Path("/band_levels")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllBandLevels() {
+
+        try {
+            return Response.ok(jobRoleService.getAllBandLevels()).build();
+        } catch (FailedToGetBandLevelException | SQLException e) {
+            System.err.println(e.getMessage());
+
+            return Response.serverError().build();
+        }
+    }
+
 }
