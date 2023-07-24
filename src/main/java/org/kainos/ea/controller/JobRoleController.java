@@ -18,11 +18,10 @@ import java.sql.SQLException;
 @Path("/api")
 public class JobRoleController {
 
-    private static JobRoleService jobRoleService;
+    private final JobRoleService jobRoleService;
 
-    public JobRoleController() {
-        DatabaseConnector databaseConnector = new DatabaseConnector();
-        jobRoleService = new JobRoleService(new JobRoleDao(), databaseConnector);
+    public JobRoleController(JobRoleService jobRoleService) {
+        this.jobRoleService = jobRoleService;
     }
 
     @GET
@@ -32,7 +31,7 @@ public class JobRoleController {
 
         try {
             return Response.ok(jobRoleService.getAllJobRoles()).build();
-        } catch (FailedToGetJobRolesException | SQLException e) {
+        } catch (FailedToGetJobRolesException e) {
             System.err.println(e.getMessage());
 
             return Response.serverError().build();
@@ -46,7 +45,7 @@ public class JobRoleController {
 
         try {
             return Response.ok(jobRoleService.getCapability()).build();
-        } catch (FailedToGetCapabilityException | SQLException e) {
+        } catch (FailedToGetCapabilityException e) {
             System.err.println(e.getMessage());
 
             return Response.serverError().build();

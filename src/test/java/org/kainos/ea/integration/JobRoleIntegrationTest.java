@@ -21,8 +21,9 @@ public class JobRoleIntegrationTest {
     );
 
     @Test
-    void test_1getJobRoles_shouldReturnListOfJobRoles() {
-        List<JobRole> response = APP.client().target("http://localhost:8080/api/job_roles")
+    void getJobRolesShouldReturnListOfJobRoles() {
+        String url = System.getenv("API_URL") + "/api/job_roles";
+        List<JobRole> response = APP.client().target(url)
                 .request()
                 .get(List.class);
 
@@ -30,8 +31,9 @@ public class JobRoleIntegrationTest {
     }
 
     @Test
-    void test_getCapability_shouldReturnListOfCapabilities() {
-        List<Capability> response = APP.client().target("http://localhost:8080/api/capability")
+    void getCapabilityShouldReturnListOfCapabilities() {
+        String url = System.getenv("API_URL") + "/api/capability";
+        List<Capability> response = APP.client().target(url)
                 .request()
                 .get(List.class);
 
