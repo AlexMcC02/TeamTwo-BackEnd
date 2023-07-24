@@ -44,7 +44,7 @@ public class JobRoleController {
 
         try {
             return Response.ok(jobRoleService.getAllBandLevels()).build();
-        } catch (FailedToGetBandLevelException | SQLException | DatabaseConnectionException e) {
+        } catch (FailedToGetBandLevelException e) {
             System.err.println(e.getMessage());
 
             return Response.serverError().build();

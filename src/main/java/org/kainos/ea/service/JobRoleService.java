@@ -29,8 +29,12 @@ public class JobRoleService {
         }
     }
 
-    public List<BandLevel> getAllBandLevels() throws FailedToGetBandLevelException, SQLException, DatabaseConnectionException {
-        return jobRoleDao.getAllBandLevels(databaseConnector.getConnection());
+    public List<BandLevel> getAllBandLevels() throws FailedToGetBandLevelException {
+        try {
+            return jobRoleDao.getAllBandLevels(databaseConnector.getConnection());
+        } catch (SQLException | DatabaseConnectionException e) {
+            throw new FailedToGetBandLevelException();
+        }
     }
 
 }
