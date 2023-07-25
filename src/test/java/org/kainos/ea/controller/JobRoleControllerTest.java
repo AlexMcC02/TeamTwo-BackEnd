@@ -54,7 +54,6 @@ public class JobRoleControllerTest {
         Response response = jobRoleController.getAllJobRoles();
         assert (response.getStatus() == 500);
     }
-
     @Test
     void getCapabilityShouldReturnOKWhenServiceReturnsList() throws FailedToGetCapabilityException {
 

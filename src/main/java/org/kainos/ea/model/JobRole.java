@@ -34,5 +34,5 @@ public class JobRole {
     public void setSpecification(String specification) {
         this.specification = specification;
     }
-
 }
+

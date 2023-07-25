@@ -6,3 +6,4 @@ public class FailedToGetJobRolesException extends Throwable {
         return "Failed get job roles.";
     }
 }
+
