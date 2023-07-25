@@ -30,6 +30,7 @@ public class JobRoleIntegrationTest {
                 .get(List.class);
 
         Assertions.assertTrue(response.size() > 0);
+        System.out.println(Url);
     }
 
     @Test
