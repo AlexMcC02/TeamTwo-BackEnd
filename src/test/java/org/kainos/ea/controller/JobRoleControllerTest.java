@@ -30,7 +30,7 @@ public class JobRoleControllerTest {
     JobRoleController jobRoleController = new JobRoleController(jobRoleService);
 
     JobRole jobRole = new JobRole(1, "Rocket Scientist", "Einstein-Tier");
-    BandLevel bandLevel = new BandLevel("Manhattan Project Member", "Oppenheimer-Tier");
+    BandLevel bandLevel = new BandLevel(1, "Manhattan Project Member", "Oppenheimer-Tier");
 
     @Test
     void getJobRolesShouldReturnOKWhenServiceReturnsList() throws FailedToGetJobRolesException {
