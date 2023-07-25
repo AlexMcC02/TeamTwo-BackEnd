@@ -20,12 +20,12 @@ public class JobRoleIntegrationTest {
             new ResourceConfigurationSourceProvider()
     );
 
-    String url = System.getenv("API_URL") + "/api/job_roles";
-    String Url = System.getenv("API_URL") + "/api/capability";
+    String Url = System.getenv("API_URL") + "/api/job_roles";
+    String url = System.getenv("API_URL") + "/api/capability";
 
     @Test
     void getJobRolesShouldReturnListOfJobRoles() {
-        List<JobRole> response = APP.client().target(url)
+        List<JobRole> response = APP.client().target(Url)
                 .request()
                 .get(List.class);
 
@@ -34,7 +34,7 @@ public class JobRoleIntegrationTest {
 
     @Test
     void getCapabilityShouldReturnListOfCapabilities() {
-        List<Capability> response = APP.client().target(Url)
+        List<Capability> response = APP.client().target(url)
                 .request()
                 .get(List.class);
 
