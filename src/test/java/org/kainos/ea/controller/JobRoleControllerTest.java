@@ -33,7 +33,7 @@ public class JobRoleControllerTest {
     Capability capability = new Capability("Software Engineer", "Engineering");
 
     @Test
-    void getJobRoles_shouldReturnOK_whenServiceReturnsList() throws FailedToGetJobRolesException {
+    void getJobRolesShouldReturnOKWhenServiceReturnsList() throws FailedToGetJobRolesException {
 
         List<JobRole> sampleJobRoles = new ArrayList<>();
         sampleJobRoles.add(jobRole);
@@ -47,7 +47,7 @@ public class JobRoleControllerTest {
     }
 
     @Test
-    void getJobRoles_shouldReturnInternalServerError_whenServiceThrowsException() throws FailedToGetJobRolesException {
+    void getJobRolesShouldReturnInternalServerErrorWhenServiceThrowsException() throws FailedToGetJobRolesException {
 
         Mockito.when(jobRoleService.getAllJobRoles()).thenThrow(FailedToGetJobRolesException.class);
 
@@ -56,7 +56,7 @@ public class JobRoleControllerTest {
     }
 
     @Test
-    void getCapability_shouldReturnOK_whenServiceReturnsList() throws FailedToGetCapabilityException {
+    void getCapabilityShouldReturnOKWhenServiceReturnsList() throws FailedToGetCapabilityException {
 
         List<Capability> sampleCapabilities = new ArrayList<>();
         sampleCapabilities.add(capability);
@@ -70,7 +70,7 @@ public class JobRoleControllerTest {
     }
 
     @Test
-    void getCapability_shouldReturnInternalServerError_whenServiceThrowsException() throws FailedToGetCapabilityException {
+    void getCapabilityShouldReturnInternalServerErrorWhenServiceThrowsException() throws FailedToGetCapabilityException {
 
         Mockito.when(jobRoleService.getCapability()).thenThrow(FailedToGetCapabilityException.class);
 
