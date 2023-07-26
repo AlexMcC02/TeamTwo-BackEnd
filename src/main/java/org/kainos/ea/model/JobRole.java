@@ -45,4 +45,3 @@ public class JobRole {
         this.capability = capability;
     }
 }
-
