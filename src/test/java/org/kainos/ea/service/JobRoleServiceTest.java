@@ -2,15 +2,9 @@ package org.kainos.ea.service;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.kainos.ea.cli.JobRoleRequest;
 import org.kainos.ea.dao.JobRoleDao;
-<<<<<<< HEAD
-import org.kainos.ea.exception.FailedToCreateJobRoleException;
-=======
 import org.kainos.ea.exception.DatabaseConnectionException;
->>>>>>> main
 import org.kainos.ea.exception.FailedToGetJobRolesException;
-import org.kainos.ea.exception.InvalidJobRoleException;
 import org.kainos.ea.model.JobRole;
 import org.kainos.ea.util.DatabaseConnector;
 import org.mockito.Mockito;

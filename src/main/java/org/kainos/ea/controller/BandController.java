@@ -17,10 +17,10 @@ import javax.ws.rs.core.Response;
 @Path("/api")
 public class BandController {
 
-    private static BandService bandService;
+    private final BandService bandService;
 
-    public BandController() {
-        bandService = new BandService(new BandDao(), new DatabaseConnector());
+    public BandController(BandService bandService) {
+        this.bandService = bandService;
     }
 
     @GET

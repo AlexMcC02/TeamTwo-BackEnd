@@ -1,6 +1,7 @@
 package org.kainos.ea.dao;
 
 import org.kainos.ea.cli.JobRoleRequest;
+import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.model.JobRole;
 import org.kainos.ea.util.DatabaseConnector;
 
@@ -35,7 +36,7 @@ public class JobRoleDao {
 
     }
 
-    public int createJobRole(JobRoleRequest jobRole) throws SQLException {
+    public int createJobRole(JobRoleRequest jobRole) throws SQLException, DatabaseConnectionException {
         Connection c = databaseConnector.getConnection();
 
         String insertStatement = "INSERT INTO `JobRole` (`Name`, `Specification`, `BandID`, `CapabilityID`) VALUES (?, ?, ?, ?)";

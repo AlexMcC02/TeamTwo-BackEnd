@@ -48,7 +48,7 @@ public class JobRoleService {
             }
 
             return id;
-        } catch (SQLException e) {
+        } catch (SQLException | DatabaseConnectionException e) {
             System.err.println(e.getMessage());
 
             throw new FailedToCreateJobRoleException();

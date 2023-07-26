@@ -1,6 +1,7 @@
 package org.kainos.ea.service;
 
 import org.kainos.ea.dao.BandDao;
+import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.exception.FailedToGetBandsException;
 import org.kainos.ea.model.Band;
 import org.kainos.ea.util.DatabaseConnector;
@@ -14,8 +15,6 @@ public class BandService {
 
     public DatabaseConnector databaseConnector;
 
-    //private BandValidator bandValidator = new BandValidator();
-
     public BandService(BandDao bandDao, DatabaseConnector databaseConnector) {
         this.bandDao = bandDao;
         this.databaseConnector = databaseConnector;
@@ -24,7 +23,7 @@ public class BandService {
     public List<Band> getAllBands() throws FailedToGetBandsException {
         try {
             return bandDao.getAllBands(databaseConnector.getConnection());
-        } catch (SQLException e) {
+        } catch (SQLException | DatabaseConnectionException e) {
             System.err.println(e.getMessage());
             throw new FailedToGetBandsException();
         }

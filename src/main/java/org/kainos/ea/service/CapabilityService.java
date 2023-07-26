@@ -2,6 +2,7 @@ package org.kainos.ea.service;
 
 import org.kainos.ea.dao.BandDao;
 import org.kainos.ea.dao.CapabilityDao;
+import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.exception.FailedToGetBandsException;
 import org.kainos.ea.exception.FailedToGetCapabilitiesException;
 import org.kainos.ea.model.Band;
@@ -22,7 +23,7 @@ public class CapabilityService {
         this.databaseConnector = databaseConnector;
     }
 
-    public List<Capability> getAllCapabilities() throws FailedToGetCapabilitiesException {
+    public List<Capability> getAllCapabilities() throws FailedToGetCapabilitiesException, DatabaseConnectionException {
         try {
             return capabilityDao.getAllCapabilities(databaseConnector.getConnection());
         } catch (SQLException e) {

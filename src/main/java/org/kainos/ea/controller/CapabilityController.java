@@ -2,6 +2,7 @@ package org.kainos.ea.controller;
 
 import io.swagger.annotations.Api;
 import org.kainos.ea.dao.CapabilityDao;
+import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.exception.FailedToGetCapabilitiesException;
 import org.kainos.ea.service.CapabilityService;
 import org.kainos.ea.util.DatabaseConnector;
@@ -16,9 +17,11 @@ import javax.ws.rs.core.Response;
 @Path("/api")
 public class CapabilityController {
 
-    private static CapabilityService capabilityService;
+    private final CapabilityService capabilityService;
 
-    public CapabilityController() { capabilityService = new CapabilityService(new CapabilityDao(), new DatabaseConnector()); }
+    public CapabilityController(CapabilityService capabilityService) {
+        this.capabilityService = capabilityService;
+    }
 
     @GET
     @Path("/capabilities")
@@ -30,6 +33,8 @@ public class CapabilityController {
             System.err.println(e.getMessage());
 
             return Response.serverError().build();
+        } catch (DatabaseConnectionException e) {
+            throw new RuntimeException(e);
         }
     }
 
