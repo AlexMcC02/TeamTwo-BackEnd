@@ -3,6 +3,7 @@ package org.kainos.ea.service;
 import org.kainos.ea.cli.JobRoleRequest;
 import org.kainos.ea.dao.JobRoleDao;
 import org.kainos.ea.exception.FailedToCreateJobRoleException;
+import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.exception.FailedToGetJobRolesException;
 import org.kainos.ea.exception.InvalidJobRoleException;
 import org.kainos.ea.model.JobRole;
@@ -25,7 +26,7 @@ public class JobRoleService {
     public List<JobRole> getAllJobRoles() throws FailedToGetJobRolesException {
         try {
             return jobRoleDao.getAllJobRoles(databaseConnector.getConnection());
-        } catch (SQLException e) {
+        } catch (SQLException | DatabaseConnectionException e) {
             System.err.println(e.getMessage());
             throw new FailedToGetJobRolesException();
         }

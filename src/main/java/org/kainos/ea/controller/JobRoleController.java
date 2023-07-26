@@ -16,16 +16,15 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.sql.SQLException;
 
 @Api("Team Too Project API")
 @Path("/api")
 public class JobRoleController {
 
-    private static JobRoleService jobRoleService;
+    private final JobRoleService jobRoleService;
 
-    public JobRoleController() {
-        jobRoleService = new JobRoleService(new JobRoleDao(), new DatabaseConnector());
+    public JobRoleController(JobRoleService jobRoleService) {
+        this.jobRoleService = jobRoleService;
     }
 
     @GET

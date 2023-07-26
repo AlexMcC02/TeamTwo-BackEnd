@@ -4,7 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.cli.JobRoleRequest;
 import org.kainos.ea.dao.JobRoleDao;
+<<<<<<< HEAD
 import org.kainos.ea.exception.FailedToCreateJobRoleException;
+=======
+import org.kainos.ea.exception.DatabaseConnectionException;
+>>>>>>> main
 import org.kainos.ea.exception.FailedToGetJobRolesException;
 import org.kainos.ea.exception.InvalidJobRoleException;
 import org.kainos.ea.model.JobRole;
@@ -31,7 +35,7 @@ public class JobRoleServiceTest {
     Connection conn;
 
     @Test
-    void getJobRolesShouldReturnListOfJobRolesWhenDaoReturnsListOfJobRoles() throws SQLException, FailedToGetJobRolesException {
+    void getJobRolesShouldReturnListOfJobRolesWhenDaoReturnsListOfJobRoles() throws SQLException, FailedToGetJobRolesException, DatabaseConnectionException {
         List<JobRole> expected_result = new ArrayList<>();
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
         Mockito.when(jobRoleDao.getAllJobRoles(conn)).thenReturn(expected_result);
@@ -42,7 +46,7 @@ public class JobRoleServiceTest {
     }
 
     @Test
-    void getJobRolesShouldThrowFailedToGetJobsExceptionWhenDaoThrowsSQLException() throws SQLException {
+    void getJobRolesShouldThrowFailedToGetJobsExceptionWhenDaoThrowsSQLException() throws SQLException, DatabaseConnectionException {
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
         Mockito.when(jobRoleDao.getAllJobRoles(conn)).thenThrow(SQLException.class);
 
@@ -51,5 +55,13 @@ public class JobRoleServiceTest {
 
     }
 
+    @Test
+    void getJobRolesShouldThrowDatabaseConnectionExceptionWhenDaoThrowsDatabaseConnectionException() throws DatabaseConnectionException, SQLException {
+        Mockito.when(databaseConnector.getConnection()).thenThrow(DatabaseConnectionException.class);
+
+        assertThrows(FailedToGetJobRolesException.class,
+                () -> jobRoleService.getAllJobRoles());
+
+    }
 
 }

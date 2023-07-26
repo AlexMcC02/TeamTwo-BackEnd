@@ -41,5 +41,4 @@ build/
 db.properties
 
 ### idea folder ###
-.idea
-.idea/stat.log
+.idea/
