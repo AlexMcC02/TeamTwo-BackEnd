@@ -4,11 +4,13 @@ public class JobRole {
     private int id;
     private String name;
     private String specification;
+    private String capability;
 
-    public JobRole(int id, String name, String specification) {
+    public JobRole(int id, String name, String specification, String capability) {
         this.id = id;
         this.name = name;
         this.specification = specification;
+        this.capability = capability;
     }
 
     public int getId() {
@@ -33,6 +35,14 @@ public class JobRole {
 
     public void setSpecification(String specification) {
         this.specification = specification;
+    }
+
+    public String getCapability() {
+        return capability;
+    }
+
+    public void setCapability(String capability) {
+        this.capability = capability;
     }
 }
 

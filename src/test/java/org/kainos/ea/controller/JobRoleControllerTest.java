@@ -7,9 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.DropwizardWebServiceApplication;
 import org.kainos.ea.DropwizardWebServiceConfiguration;
-import org.kainos.ea.exception.FailedToGetCapabilityException;
 import org.kainos.ea.exception.FailedToGetJobRolesException;
-import org.kainos.ea.model.Capability;
 import org.kainos.ea.model.JobRole;
 import org.kainos.ea.service.JobRoleService;
 import org.mockito.Mockito;
@@ -29,8 +27,7 @@ public class JobRoleControllerTest {
     JobRoleService jobRoleService = Mockito.mock(JobRoleService.class);
     JobRoleController jobRoleController = new JobRoleController(jobRoleService);
 
-    JobRole jobRole = new JobRole(1, "Rocket Scientist", "Einstein-Tier");
-    Capability capability = new Capability("Software Engineer", "Engineering");
+    JobRole jobRole = new JobRole(1, "Rocket Scientist", "Einstein-Tier", "Digital Services");
 
     @Test
     void getJobRolesShouldReturnOKWhenServiceReturnsList() throws FailedToGetJobRolesException {
@@ -52,28 +49,6 @@ public class JobRoleControllerTest {
         Mockito.when(jobRoleService.getAllJobRoles()).thenThrow(FailedToGetJobRolesException.class);
 
         Response response = jobRoleController.getAllJobRoles();
-        assert (response.getStatus() == 500);
-    }
-    @Test
-    void getCapabilityShouldReturnOKWhenServiceReturnsList() throws FailedToGetCapabilityException {
-
-        List<Capability> sampleCapabilities = new ArrayList<>();
-        sampleCapabilities.add(capability);
-        sampleCapabilities.add(capability);
-        sampleCapabilities.add(capability);
-
-        Mockito.when(jobRoleService.getCapability()).thenReturn(sampleCapabilities);
-
-        Response response = jobRoleController.getCapability();
-        assert (response.getStatus() == 200);
-    }
-
-    @Test
-    void getCapabilityShouldReturnInternalServerErrorWhenServiceThrowsException() throws FailedToGetCapabilityException {
-
-        Mockito.when(jobRoleService.getCapability()).thenThrow(FailedToGetCapabilityException.class);
-
-        Response response = jobRoleController.getCapability();
         assert (response.getStatus() == 500);
     }
 }
