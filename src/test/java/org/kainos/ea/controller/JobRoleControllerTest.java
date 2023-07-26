@@ -7,9 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.DropwizardWebServiceApplication;
 import org.kainos.ea.DropwizardWebServiceConfiguration;
-import org.kainos.ea.exception.FailedToGetBandLevelException;
 import org.kainos.ea.exception.FailedToGetJobRolesException;
-import org.kainos.ea.model.BandLevel;
 import org.kainos.ea.model.JobRole;
 import org.kainos.ea.service.JobRoleService;
 import org.mockito.Mockito;
@@ -29,8 +27,7 @@ public class JobRoleControllerTest {
     JobRoleService jobRoleService = Mockito.mock(JobRoleService.class);
     JobRoleController jobRoleController = new JobRoleController(jobRoleService);
 
-    JobRole jobRole = new JobRole(1, "Rocket Scientist", "Einstein-Tier");
-    BandLevel bandLevel = new BandLevel(1, "Manhattan Project Member", "Oppenheimer-Tier");
+    JobRole jobRole = new JobRole(1, "Rocket Scientist", "Einstein-Tier", "Trainee", "Digital Services");
 
     @Test
     void getJobRolesShouldReturnOKWhenServiceReturnsList() throws FailedToGetJobRolesException {
@@ -54,27 +51,5 @@ public class JobRoleControllerTest {
         Response response = jobRoleController.getAllJobRoles();
         assert (response.getStatus() == 500);
     }
-
-    @Test
-    void getBandLevelsShouldReturnOkWhenServiceReturnsList() throws FailedToGetJobRolesException, FailedToGetBandLevelException {
-        List<BandLevel> sampleBandLevels = new ArrayList<>();
-        sampleBandLevels.add(bandLevel);
-        sampleBandLevels.add(bandLevel);
-        sampleBandLevels.add(bandLevel);
-
-        Mockito.when(jobRoleService.getAllBandLevels()).thenReturn(sampleBandLevels);
-
-        Response response = jobRoleController.getAllBandLevels();
-        assert (response.getStatus() == 200);
-    }
-
-    @Test
-     void getBandLevelsShouldReturnInternalServerErrorWhenServiceThrowsException() throws FailedToGetBandLevelException {
-        Mockito.when(jobRoleService.getAllBandLevels()).thenThrow(FailedToGetBandLevelException.class);
-
-        Response response = jobRoleController.getAllBandLevels();
-        assert (response.getStatus() == 500);
-    }
-
 }
 

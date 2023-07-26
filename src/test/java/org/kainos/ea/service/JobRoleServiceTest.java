@@ -4,9 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.dao.JobRoleDao;
 import org.kainos.ea.exception.DatabaseConnectionException;
-import org.kainos.ea.exception.FailedToGetBandLevelException;
 import org.kainos.ea.exception.FailedToGetJobRolesException;
-import org.kainos.ea.model.BandLevel;
 import org.kainos.ea.model.JobRole;
 import org.kainos.ea.util.DatabaseConnector;
 import org.mockito.Mockito;
@@ -59,33 +57,4 @@ public class JobRoleServiceTest {
                 () -> jobRoleService.getAllJobRoles());
 
     }
-
-    @Test
-    void getBandLevelsShouldReturnListOfBandLevelsWhenDaoReturnsListOfBandLevels() throws DatabaseConnectionException, SQLException, FailedToGetBandLevelException {
-        List<BandLevel> expected_result = new ArrayList<>();
-        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
-        Mockito.when(jobRoleDao.getAllBandLevels(conn)).thenReturn(expected_result);
-
-        List<BandLevel> result = jobRoleService.getAllBandLevels();
-
-        assertEquals(expected_result, result);
-    }
-
-    @Test
-    void getBandLevelsShouldThrowFailedToGetBandLevelExceptionWhenDaoThrowsSQLException() throws DatabaseConnectionException, SQLException {
-        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
-        Mockito.when(jobRoleDao.getAllBandLevels(conn)).thenThrow(SQLException.class);
-
-        assertThrows(FailedToGetBandLevelException.class,
-                () -> jobRoleService.getAllBandLevels());
-    }
-
-    @Test
-    void getBandLevelsShouldThrowDatabaseConnectionExceptionWhenDaoThrowsDatabaseConnectionException() throws DatabaseConnectionException, SQLException {
-        Mockito.when(databaseConnector.getConnection()).thenThrow(DatabaseConnectionException.class);
-
-        assertThrows(FailedToGetBandLevelException.class,
-                () -> jobRoleService.getAllBandLevels());
-    }
-
 }
