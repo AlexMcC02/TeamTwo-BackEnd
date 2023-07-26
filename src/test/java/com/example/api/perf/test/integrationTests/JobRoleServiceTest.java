@@ -32,7 +32,7 @@ public class JobRoleServiceTest {
     public void testGetSpecificationById_ValidId_ReturnsJobRoleSpec() throws FailedToGetValidJobId, SQLException {
         // Arrange
         int id = 1;
-        JobRole expectedSpec = new JobRole(id, "Software Engineer", "Does coding.", 1,1);
+        JobRole expectedSpec = new JobRole(id, "Software Engineer", "Does coding.");
         // Assuming you have a mock/stub implementation of JobRoleDao
         Mockito.when(jobRoleDao.getSpecificationById(id)).thenReturn(expectedSpec);
 
@@ -81,7 +81,7 @@ public class JobRoleServiceTest {
     public void testGetSpecificationById_PerformanceTesting() throws FailedToGetValidJobId, SQLException {
         // Arrange
         int id = 1000000;
-        JobRole expectedSpec = new JobRole(id, "Software Engineer", "Does coding.", 1,1);
+        JobRole expectedSpec = new JobRole(id, "Software Engineer", "Does coding.");
         // Assuming you have a mock/stub implementation of JobRoleDao
         Mockito.when(jobRoleDao.getSpecificationById(id)).thenReturn(expectedSpec);
 

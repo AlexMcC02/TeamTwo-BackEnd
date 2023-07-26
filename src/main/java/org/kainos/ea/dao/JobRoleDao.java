@@ -28,9 +28,7 @@ public class JobRoleDao {
             JobRole jobRole = new JobRole (
                     rs.getInt("ID"),
                     rs.getString("Name"),
-                    rs.getString("Specification"),
-                    rs.getInt("BandID"),
-                    rs.getInt("CapabilityID")
+                    rs.getString("Specification")
             );
             jobRoleList.add(jobRole);
         }
@@ -40,7 +38,7 @@ public class JobRoleDao {
     }
 
 
-    public JobRole getSpecificationById(int id) throws SQLException, FailedToGetValidJobId {
+    public JobRole getSpecificationById(int id) throws SQLException {
         Connection c = databaseConnector.getConnection();
         Statement st = c.createStatement();
 
@@ -50,9 +48,7 @@ public class JobRoleDao {
             return new JobRole(
                     rs.getInt("ID"),
                     rs.getString("Name"),
-                    rs.getString("Specification"),
-                    rs.getInt("BandID"),
-                    rs.getInt("CapabilityID")
+                    rs.getString("Specification")
             );
         }
         return null;
