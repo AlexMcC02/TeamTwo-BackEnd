@@ -1,11 +1,12 @@
 package org.kainos.ea.validator;
 
-public class BandValidator {
+import org.kainos.ea.model.Band;
 
-//    public String isValidBand(BandRequest band) {
-//        if (band.getName().length() > 50) {
-//            return "Name greater than 50 characters";
-//        }
-//        return null;
-//    }
+public class BandValidator {
+    public String isValidBand(Band band) {
+        if (band.getName().length() > 50) {
+            return "Name greater than 50 characters";
+        }
+        return null;
+    }
 }

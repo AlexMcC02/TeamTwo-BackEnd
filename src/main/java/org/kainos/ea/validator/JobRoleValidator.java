@@ -11,14 +11,6 @@ public class JobRoleValidator {
         if (jobRole.getSpecification().length()> 100) {
             return "Specification less than 100 characters";
         }
-// validation for Band & capability below
-//        if (jobRole.getBandId().equals()()) {
-//            return "Band ID must not be empty";
-//        }
-//
-//        if (jobRole.getCapabilityId().isEmpty()) {
-//            return "Capability ID must not be empty";
-//        }
          return null;
     }
 }
