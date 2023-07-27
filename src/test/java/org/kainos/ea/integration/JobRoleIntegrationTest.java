@@ -1,5 +1,7 @@
 package org.kainos.ea.integration;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.configuration.ResourceConfigurationSourceProvider;
 import io.dropwizard.testing.junit5.DropwizardAppExtension;
 import io.dropwizard.testing.junit5.DropwizardExtensionsSupport;
@@ -10,7 +12,11 @@ import org.kainos.ea.DropwizardWebServiceApplication;
 import org.kainos.ea.DropwizardWebServiceConfiguration;
 import org.kainos.ea.model.JobRole;
 
+import java.io.DataInput;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @ExtendWith(DropwizardExtensionsSupport.class)
 public class JobRoleIntegrationTest {
@@ -26,6 +32,13 @@ public class JobRoleIntegrationTest {
                 .request()
                 .get(List.class);
 
+        // Parse object.
+        ObjectMapper mapper = new ObjectMapper();
+        List<JobRole> parsedResponse = mapper.convertValue(response, new TypeReference<List<JobRole>>() {});
+
+        for (int i = 0; i < parsedResponse.size(); i++) {
+            Assertions.assertNotNull(parsedResponse.get(i).getCapability());
+        }
         Assertions.assertTrue(response.size() > 0);
     }
 }

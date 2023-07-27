@@ -6,6 +6,8 @@ public class JobRole {
     private String specification;
     private String capability;
 
+    public JobRole() {}
+
     public JobRole(int id, String name, String specification, String capability) {
         this.id = id;
         this.name = name;
