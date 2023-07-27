@@ -1,7 +1,8 @@
 package org.kainos.ea.dao;
 
-import org.kainos.ea.exception.FailedToGetValidJobId;
+import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.model.JobRole;
+import org.kainos.ea.model.JobRoleSpec;
 import org.kainos.ea.util.DatabaseConnector;
 
 import java.sql.Connection;
@@ -16,8 +17,8 @@ public class JobRoleDao {
     private DatabaseConnector databaseConnector = new DatabaseConnector();
 
 
-    public List<JobRole> getAllJobRoles() throws SQLException {
-        Connection c =databaseConnector.getConnection();
+    public List<JobRole> getAllJobRoles(Connection c) throws SQLException {
+
         Statement st = c.createStatement();
 
         ResultSet rs = st.executeQuery("SELECT * FROM `JobRole`;");
@@ -38,17 +39,18 @@ public class JobRoleDao {
     }
 
 
-    public JobRole getSpecificationById(int id) throws SQLException {
+    public JobRoleSpec getSpecificationById(int id) throws SQLException, DatabaseConnectionException {
         Connection c = databaseConnector.getConnection();
         Statement st = c.createStatement();
 
-        ResultSet rs = st.executeQuery("SELECT ID, Name, Specification, BandID, CapabilityID"
+        ResultSet rs = st.executeQuery("SELECT ID, Name, Specification, UrlLink "
                 + " FROM JobRole WHERE ID =" + id + ";");
         while (rs.next()) {
-            return new JobRole(
+            return new JobRoleSpec(
                     rs.getInt("ID"),
                     rs.getString("Name"),
-                    rs.getString("Specification")
+                    rs.getString("Specification"),
+                    rs.getString("UrlLink")
             );
         }
         return null;

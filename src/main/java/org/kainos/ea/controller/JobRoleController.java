@@ -19,10 +19,12 @@ import javax.ws.rs.core.Response;
 @Path("/api")
 public class JobRoleController {
 
-    private static JobRoleService jobRoleService;
-    public JobRoleController() {
-        jobRoleService = new JobRoleService(new JobRoleDao(), new DatabaseConnector());
+    private final JobRoleService jobRoleService;
+
+    public JobRoleController(JobRoleService jobRoleService) {
+        this.jobRoleService = jobRoleService;
     }
+
 
     @GET
     @Path("/job_roles")
