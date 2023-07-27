@@ -4,8 +4,10 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.dao.JobRoleDao;
+import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.exception.FailedToGetValidJobId;
 import org.kainos.ea.model.JobRole;
+import org.kainos.ea.model.JobRoleSpec;
 import org.kainos.ea.service.JobRoleService;
 import org.kainos.ea.util.DatabaseConnector;
 import org.mockito.Mockito;
@@ -29,15 +31,15 @@ public class JobRoleServiceTest {
 
 
     @Test
-    public void testGetSpecificationById_ValidId_ReturnsJobRoleSpec() throws FailedToGetValidJobId, SQLException {
+    public void testGetSpecificationById_ValidId_ReturnsJobRoleSpec() throws FailedToGetValidJobId, SQLException, DatabaseConnectionException {
         // Arrange
         int id = 1;
-        JobRole expectedSpec = new JobRole(id, "Software Engineer", "Does coding.", rs.getString("UrlLink"));
+        JobRoleSpec expectedSpec = new JobRoleSpec(id, "Software Engineer", "Does coding.", "https://google.com");
         // Assuming you have a mock/stub implementation of JobRoleDao
         Mockito.when(jobRoleDao.getSpecificationById(id)).thenReturn(expectedSpec);
 
         // Act
-        JobRole actualSpec = jobRoleService.getSpecificationById(id); // Use jobRoleService instance here
+        JobRoleSpec actualSpec = jobRoleService.getSpecificationById(id); // Use jobRoleService instance here
 
         // Assert
         Assert.assertEquals(expectedSpec, actualSpec);
@@ -53,7 +55,7 @@ public class JobRoleServiceTest {
     }
 
     @Test(expected = FailedToGetValidJobId.class)
-    public void testGetSpecificationById_IdNotFound_ThrowsFailedToGetValidJobId() throws FailedToGetValidJobId, SQLException {
+    public void testGetSpecificationById_IdNotFound_ThrowsFailedToGetValidJobId() throws FailedToGetValidJobId, SQLException, DatabaseConnectionException {
         // Arrange
         int id = 100;
         // Assuming you have a mock/stub implementation of JobRoleDao
@@ -64,7 +66,7 @@ public class JobRoleServiceTest {
     }
 
     @Test(expected = FailedToGetValidJobId.class)
-    public void testGetSpecificationById_DatabaseException_ThrowsFailedToGetValidJobId() throws FailedToGetValidJobId, SQLException {
+    public void testGetSpecificationById_DatabaseException_ThrowsFailedToGetValidJobId() throws FailedToGetValidJobId, SQLException, DatabaseConnectionException {
         // Arrange
         int id = 5;
         // Assuming you have a mock/stub implementation of JobRoleDao
@@ -78,15 +80,15 @@ public class JobRoleServiceTest {
     }
 
     @Test(timeout = 1000)
-    public void testGetSpecificationById_PerformanceTesting() throws FailedToGetValidJobId, SQLException {
+    public void testGetSpecificationById_PerformanceTesting() throws FailedToGetValidJobId, SQLException, DatabaseConnectionException {
         // Arrange
         int id = 1000000;
-        JobRole expectedSpec = new JobRole(id, "Software Engineer", "Does coding.", rs.getString("UrlLink"));
+        JobRoleSpec expectedSpec = new JobRoleSpec(id, "Software Engineer", "Does coding.", "https://google.com");
         // Assuming you have a mock/stub implementation of JobRoleDao
         Mockito.when(jobRoleDao.getSpecificationById(id)).thenReturn(expectedSpec);
 
         // Act
-        JobRole actualSpec = jobRoleService.getSpecificationById(id); // Use jobRoleService instance here
+        JobRoleSpec actualSpec = jobRoleService.getSpecificationById(id); // Use jobRoleService instance here
 
         // Assert
         Assert.assertEquals(expectedSpec, actualSpec);
