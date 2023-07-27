@@ -15,6 +15,8 @@ public class JobRole {
         this.capability = capability;
     }
 
+    public JobRole() {}
+
     public int getId() {
         return id;
     }
