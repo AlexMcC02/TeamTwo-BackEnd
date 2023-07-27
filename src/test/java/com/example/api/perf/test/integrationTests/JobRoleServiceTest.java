@@ -36,7 +36,7 @@ public class JobRoleServiceTest {
         int id = 1;
         JobRoleSpec expectedSpec = new JobRoleSpec(id, "Software Engineer", "Does coding.", "https://google.com");
         // Assuming you have a mock/stub implementation of JobRoleDao
-        Mockito.when(jobRoleDao.getSpecificationById(id)).thenReturn(expectedSpec);
+        Mockito.when(jobRoleDao.getSpecificationById(id, databaseConnector.getConnection())).thenReturn(expectedSpec);
 
         // Act
         JobRoleSpec actualSpec = jobRoleService.getSpecificationById(id); // Use jobRoleService instance here
@@ -59,7 +59,7 @@ public class JobRoleServiceTest {
         // Arrange
         int id = 100;
         // Assuming you have a mock/stub implementation of JobRoleDao
-        Mockito.when(jobRoleDao.getSpecificationById(id)).thenReturn(null);
+        Mockito.when(jobRoleDao.getSpecificationById(id, databaseConnector.getConnection())).thenReturn(null);
 
         // Act and Assert: Exception is expected to be thrown
         jobRoleService.getSpecificationById(id); // Use jobRoleService instance here
@@ -71,7 +71,7 @@ public class JobRoleServiceTest {
         int id = 5;
         // Assuming you have a mock/stub implementation of JobRoleDao
 
-        Mockito.when(jobRoleDao.getSpecificationById(id)).thenThrow(new SQLException("Database connection error"));
+        Mockito.when(jobRoleDao.getSpecificationById(id, databaseConnector.getConnection())).thenThrow(new SQLException("Database connection error"));
 
         // Act
         jobRoleService.getSpecificationById(id); // Use jobRoleService instance here
@@ -85,7 +85,7 @@ public class JobRoleServiceTest {
         int id = 1000000;
         JobRoleSpec expectedSpec = new JobRoleSpec(id, "Software Engineer", "Does coding.", "https://google.com");
         // Assuming you have a mock/stub implementation of JobRoleDao
-        Mockito.when(jobRoleDao.getSpecificationById(id)).thenReturn(expectedSpec);
+        Mockito.when(jobRoleDao.getSpecificationById(id, databaseConnector.getConnection())).thenReturn(expectedSpec);
 
         // Act
         JobRoleSpec actualSpec = jobRoleService.getSpecificationById(id); // Use jobRoleService instance here

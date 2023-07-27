@@ -35,7 +35,7 @@ public class JobRoleService {
         }
 
         try {
-            JobRoleSpec Spec = jobRoleDao.getSpecificationById(id);
+            JobRoleSpec Spec = jobRoleDao.getSpecificationById(id, databaseConnector.getConnection());
             if (Spec == null) {
                 throw new FailedToGetValidJobId();
             }

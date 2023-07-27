@@ -35,7 +35,7 @@ public class JobRoleDao {
     }
 
 
-    public JobRoleSpec getSpecificationById(int id) throws SQLException, DatabaseConnectionException {
+    public JobRoleSpec getSpecificationById(int id, Connection c) throws SQLException, DatabaseConnectionException {
 
         Statement st = c.createStatement();
 
