@@ -5,10 +5,21 @@ public class JobRole {
     private String name;
     private String specification;
 
-    public JobRole(int id, String name, String specification) {
+    private String urlLink;
+
+    public String getUrlLink() {
+        return urlLink;
+    }
+
+    public void setUrlLink(String urlLink) {
+        this.urlLink = urlLink;
+    }
+
+    public JobRole(int id, String name, String specification, String urlLink) {
         this.id = id;
         this.name = name;
         this.specification = specification;
+        this.urlLink = urlLink;
     }
 
     public int getId() {

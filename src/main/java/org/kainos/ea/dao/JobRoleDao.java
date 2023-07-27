@@ -19,7 +19,7 @@ public class JobRoleDao {
     public List<JobRole> getAllJobRoles(Connection c) throws SQLException {
         Statement st = c.createStatement();
 
-        ResultSet rs = st.executeQuery("SELECT ID, Name, Specification FROM `JobRole`;");
+        ResultSet rs = st.executeQuery("SELECT ID, Name, Specification, UrlLink FROM `JobRole`;");
 
         List<JobRole> jobRoleList = new ArrayList<>();
 
@@ -27,7 +27,8 @@ public class JobRoleDao {
             JobRole jobRole = new JobRole (
                     rs.getInt("ID"),
                     rs.getString("Name"),
-                    rs.getString("Specification")
+                    rs.getString("Specification"),
+                    rs.getString("UrlLink")
             );
             jobRoleList.add(jobRole);
         }
@@ -39,7 +40,7 @@ public class JobRoleDao {
     public int createJobRole(JobRoleRequest jobRole) throws SQLException, DatabaseConnectionException {
         Connection c = databaseConnector.getConnection();
 
-        String insertStatement = "INSERT INTO `JobRole` (`Name`, `Specification`, `BandID`, `CapabilityID`) VALUES (?, ?, ?, ?)";
+        String insertStatement = "INSERT INTO `JobRole` (`Name`, `Specification`, `BandID`, `CapabilityID`, `UrlLink`) VALUES (?, ?, ?, ?, ?)";
 
         PreparedStatement st = c.prepareStatement(insertStatement, Statement.RETURN_GENERATED_KEYS);
 
@@ -47,6 +48,7 @@ public class JobRoleDao {
         st.setString(2, jobRole.getSpecification());
         st.setInt(3, jobRole.getBandId());
         st.setInt(4, jobRole.getCapabilityId());
+        st.setString(5, jobRole.getUrlLink());
 
         st.executeUpdate();
 
