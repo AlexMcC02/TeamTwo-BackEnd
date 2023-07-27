@@ -2,12 +2,9 @@ package org.kainos.ea.util;
 
 import org.kainos.ea.exception.DatabaseConnectionException;
 
-import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
-
 public class DatabaseConnector {
     private static Connection conn;
 

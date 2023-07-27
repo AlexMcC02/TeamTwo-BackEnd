@@ -12,8 +12,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class JobRoleService {
-
-    private JobRoleDao jobRoleDao = new JobRoleDao();
+    public JobRoleDao jobRoleDao;
     public DatabaseConnector databaseConnector;
 
     public JobRoleService(JobRoleDao jobRoleDao, DatabaseConnector databaseConnector) {

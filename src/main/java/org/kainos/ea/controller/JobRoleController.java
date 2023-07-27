@@ -1,6 +1,8 @@
 package org.kainos.ea.controller;
 
 import io.swagger.annotations.Api;
+import org.kainos.ea.dao.JobRoleDao;
+import org.kainos.ea.exception.FailedToGetJobRolesException;
 import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.dao.JobRoleDao;
 import org.kainos.ea.exception.FailedToGetJobRolesException;
