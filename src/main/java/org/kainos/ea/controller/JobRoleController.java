@@ -36,7 +36,7 @@ public class JobRoleController {
     }
 
     @GET
-    @Path("/job_roles{id}")
+    @Path("/job_roles/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getJobRoleByID(@PathParam("id") int id) {
 
@@ -61,5 +61,4 @@ public class JobRoleController {
             return Response.serverError().build();
         }
     }
-
 }

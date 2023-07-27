@@ -8,13 +8,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.DropwizardWebServiceApplication;
 import org.kainos.ea.DropwizardWebServiceConfiguration;
 import org.kainos.ea.exception.FailedToGetJobRolesException;
+import org.kainos.ea.exception.FailedToUpdateJobRoleException;
+import org.kainos.ea.exception.JobRoleDoesNotExistException;
 import org.kainos.ea.model.JobRole;
+import org.kainos.ea.model.JobRoleRequest;
 import org.kainos.ea.service.JobRoleService;
 import org.mockito.Mockito;
 
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(DropwizardExtensionsSupport.class)
 public class JobRoleControllerTest {
@@ -28,6 +33,7 @@ public class JobRoleControllerTest {
     JobRoleController jobRoleController = new JobRoleController(jobRoleService);
 
     JobRole jobRole = new JobRole(1, "Rocket Scientist", "Einstein-Tier", "Trainee", "Digital Services");
+    JobRoleRequest jobRoleRequest = new JobRoleRequest("Oppenheimer", "Nuclear Scientist", 4, 1);
 
     @Test
     void getJobRolesShouldReturnOKWhenServiceReturnsList() throws FailedToGetJobRolesException {
@@ -51,5 +57,23 @@ public class JobRoleControllerTest {
         Response response = jobRoleController.getAllJobRoles();
         assert (response.getStatus() == 500);
     }
+
+    @Test
+    void updateJobShouldReturnOkWhenServiceReturnsVoid() throws FailedToUpdateJobRoleException, JobRoleDoesNotExistException {
+        Mockito.doNothing().when(jobRoleService).updateJobRole(1, jobRoleRequest);
+
+        Response response = jobRoleController.updateJobRole(1, jobRoleRequest);
+        assert(response.getStatus() == 200);
+    }
+
+    @Test
+    void updateJobRoleShouldReturnInternalServerErrorWhenServiceThrowsException() throws FailedToUpdateJobRoleException, JobRoleDoesNotExistException {
+
+        Mockito.doThrow(FailedToUpdateJobRoleException.class).when(jobRoleService).updateJobRole(1, jobRoleRequest);
+
+        Response response = jobRoleController.updateJobRole(1, jobRoleRequest);
+        assert(response.getStatus() == 500);
+    }
+
 }
 
