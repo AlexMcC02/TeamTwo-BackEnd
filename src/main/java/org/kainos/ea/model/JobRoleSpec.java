@@ -1,5 +1,6 @@
 package org.kainos.ea.model;
 
+
 public class JobRoleSpec {
     private int id;
     private String name;
@@ -20,6 +21,10 @@ public class JobRoleSpec {
         this.name = name;
         this.specification = specification;
         this.urlLink = urlLink;
+    }
+
+    public JobRoleSpec() {
+
     }
 
     public int getId() {
