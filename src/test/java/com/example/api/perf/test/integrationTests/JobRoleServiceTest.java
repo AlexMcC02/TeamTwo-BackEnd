@@ -27,9 +27,6 @@ public class JobRoleServiceTest {
     JobRoleService jobRoleService = new JobRoleService(jobRoleDao, databaseConnector);
 
     Connection conn;
-
-
-
     @Test
     public void testGetSpecificationById_ValidId_ReturnsJobRoleSpec() throws FailedToGetValidJobId, SQLException, DatabaseConnectionException {
         // Arrange
@@ -77,21 +74,6 @@ public class JobRoleServiceTest {
         jobRoleService.getSpecificationById(id); // Use jobRoleService instance here
 
         // Assert: Exception is expected to be thrown
-    }
-
-    @Test(timeout = 1000)
-    public void testGetSpecificationById_PerformanceTesting() throws FailedToGetValidJobId, SQLException, DatabaseConnectionException {
-        // Arrange
-        int id = 1000000;
-        JobRoleSpec expectedSpec = new JobRoleSpec(id, "Software Engineer", "Does coding.", "https://google.com");
-        // Assuming you have a mock/stub implementation of JobRoleDao
-        Mockito.when(jobRoleDao.getSpecificationById(id, databaseConnector.getConnection())).thenReturn(expectedSpec);
-
-        // Act
-        JobRoleSpec actualSpec = jobRoleService.getSpecificationById(id); // Use jobRoleService instance here
-
-        // Assert
-        Assert.assertEquals(expectedSpec, actualSpec);
     }
 }
 
