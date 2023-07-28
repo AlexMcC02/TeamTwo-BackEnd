@@ -1,8 +1,10 @@
 package org.kainos.ea.dao;
 
+import org.checkerframework.dataflow.qual.Pure;
 import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.model.JobRole;
 import org.kainos.ea.model.JobRoleRequest;
+import org.kainos.ea.model.PureJobRole;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -57,12 +59,13 @@ public class JobRoleDao {
         return -1;
     }
 
-    public JobRoleRequest getJobRoleById(int id, Connection c) throws SQLException {
+    public PureJobRole getJobRoleById(int id, Connection c) throws SQLException {
         Statement st = c.createStatement();
-        ResultSet rs = st.executeQuery("SELECT Name, Specification, BandID, CapabilityID, UrlLink FROM `JobRole` WHERE ID = " + id);
+        ResultSet rs = st.executeQuery("SELECT ID, Name, Specification, BandID, CapabilityID, UrlLink FROM `JobRole` WHERE ID = " + id);
 
         while (rs.next()) {
-            return new JobRoleRequest (
+            return new PureJobRole (
+                    rs.getInt("ID"),
                     rs.getString("Name"),
                     rs.getString("Specification"),
                     rs.getInt("BandID"),

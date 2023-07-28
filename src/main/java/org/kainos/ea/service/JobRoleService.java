@@ -4,6 +4,7 @@ import org.kainos.ea.dao.JobRoleDao;
 import org.kainos.ea.exception.*;
 import org.kainos.ea.model.JobRole;
 import org.kainos.ea.model.JobRoleRequest;
+import org.kainos.ea.model.PureJobRole;
 import org.kainos.ea.util.DatabaseConnector;
 import org.kainos.ea.validator.JobRoleValidator;
 
@@ -52,9 +53,9 @@ public class JobRoleService {
         }
     }
 
-    public JobRoleRequest getJobRoleById(int id) throws JobRoleDoesNotExistException, FailedToGetJobRolesException {
+    public PureJobRole getJobRoleById(int id) throws JobRoleDoesNotExistException, FailedToGetJobRolesException {
         try {
-            JobRoleRequest jobRole = jobRoleDao.getJobRoleById(id, databaseConnector.getConnection());
+            PureJobRole jobRole = jobRoleDao.getJobRoleById(id, databaseConnector.getConnection());
             if (jobRole == null) {
                 throw new JobRoleDoesNotExistException();
             }
@@ -67,7 +68,7 @@ public class JobRoleService {
 
     public void updateJobRole(int id, JobRoleRequest jobRole) throws JobRoleDoesNotExistException, FailedToUpdateJobRoleException {
         try {
-            JobRoleRequest jobRoleToUpdate = jobRoleDao.getJobRoleById(id, databaseConnector.getConnection());
+            PureJobRole jobRoleToUpdate = jobRoleDao.getJobRoleById(id, databaseConnector.getConnection());
 
             if (jobRoleToUpdate == null) {
                 throw new JobRoleDoesNotExistException();
