@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.dao.JobRoleDao;
 import org.kainos.ea.exception.DatabaseConnectionException;
+import org.kainos.ea.exception.FailedToFindExistingIdInDb;
 import org.kainos.ea.exception.FailedToGetJobRolesException;
 import org.kainos.ea.exception.FailedToGetValidJobId;
 import org.kainos.ea.model.JobRole;
@@ -60,53 +61,40 @@ public class JobRoleServiceTest {
                 () -> jobRoleService.getAllJobRoles());
 
     }
-    @org.junit.Test
-    public void testGetSpecificationById_ValidId_ReturnsJobRoleSpec() throws FailedToGetValidJobId, SQLException, DatabaseConnectionException {
-        // Arrange
-        int id = 1;
-        JobRoleSpec expectedSpec = new JobRoleSpec(id, "Software Engineer", "Does coding.", "https://google.com");
-        // Assuming you have a mock/stub implementation of JobRoleDao
-        Mockito.when(jobRoleDao.getSpecificationById(id, databaseConnector.getConnection())).thenReturn(expectedSpec);
 
-        // Act
-        JobRoleSpec actualSpec = jobRoleService.getSpecificationById(id); // Use jobRoleService instance here
+    @Test
+    void getSpecificationByIdShouldReturnJobRoleSpecForValidId() throws FailedToGetValidJobId, FailedToFindExistingIdInDb, DatabaseConnectionException, SQLException {
+        int validId = 1;
+        JobRoleSpec expectedSpec = new JobRoleSpec(validId, "Software Engineer", "Does coding.", "https://google.com");
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+        Mockito.when(jobRoleDao.getSpecificationById(validId, conn)).thenReturn(expectedSpec);
 
-        // Assert
-        Assert.assertEquals(expectedSpec, actualSpec);
+        JobRoleSpec resultSpec = jobRoleService.getSpecificationById(validId);
+
+        assertEquals(expectedSpec, resultSpec);
     }
+    @Test
+    void getSpecificationByIdShouldThrowFailedToGetValidJobIdForNegativeId() {
+        int invalidId = -1;
 
-    @org.junit.Test(expected = FailedToGetValidJobId.class)
-    public void testGetSpecificationById_InvalidId_ThrowsFailedToGetValidJobId() throws FailedToGetValidJobId {
-        // Arrange
-        int id = -1;
-
-        // Act and Assert: Exception is expected to be thrown
-        jobRoleService.getSpecificationById(id); // Use jobRoleService instance here
+        assertThrows(FailedToGetValidJobId.class,
+                () -> jobRoleService.getSpecificationById(invalidId));
     }
+    @Test
+    void getSpecificationByIdShouldThrowFailedToFindExistingIdInDbForNonExistingId() throws FailedToGetValidJobId, FailedToFindExistingIdInDb, DatabaseConnectionException, SQLException {
+        int nonExistingId = 999;
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+        Mockito.when(jobRoleDao.getSpecificationById(nonExistingId, conn)).thenReturn(null);
 
-    @org.junit.Test(expected = FailedToGetValidJobId.class)
-    public void testGetSpecificationById_IdNotFound_ThrowsFailedToGetValidJobId() throws FailedToGetValidJobId, SQLException, DatabaseConnectionException {
-        // Arrange
-        int id = 100;
-        // Assuming you have a mock/stub implementation of JobRoleDao
-        Mockito.when(jobRoleDao.getSpecificationById(id, databaseConnector.getConnection())).thenReturn(null);
-
-        // Act and Assert: Exception is expected to be thrown
-        jobRoleService.getSpecificationById(id); // Use jobRoleService instance here
+        assertThrows(FailedToFindExistingIdInDb.class,
+                () -> jobRoleService.getSpecificationById(nonExistingId));
     }
+    @Test
+    void getSpecificationByIdShouldThrowDatabaseConnectionExceptionOnDatabaseConnectionError() throws FailedToGetValidJobId, FailedToFindExistingIdInDb, DatabaseConnectionException, SQLException {
+        int validId = 123;
+        Mockito.when(databaseConnector.getConnection()).thenThrow(DatabaseConnectionException.class);
 
-    @org.junit.Test(expected = FailedToGetValidJobId.class)
-    public void testGetSpecificationById_DatabaseException_ThrowsFailedToGetValidJobId() throws FailedToGetValidJobId, SQLException, DatabaseConnectionException {
-        // Arrange
-        int id = 5;
-        // Assuming you have a mock/stub implementation of JobRoleDao
-
-        Mockito.when(jobRoleDao.getSpecificationById(id, databaseConnector.getConnection())).thenThrow(SQLException.class);
-
-        // Act
-        jobRoleService.getSpecificationById(id); // Use jobRoleService instance here
-
-        // Assert: Exception is expected to be thrown
+        assertThrows(DatabaseConnectionException.class,
+                () -> jobRoleService.getSpecificationById(validId));
     }
-
 }

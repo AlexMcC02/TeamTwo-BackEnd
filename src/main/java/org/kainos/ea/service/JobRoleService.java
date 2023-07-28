@@ -38,16 +38,13 @@ public class JobRoleService {
         try {
             JobRoleSpec Spec = jobRoleDao.getSpecificationById(id, databaseConnector.getConnection());
             if (Spec == null) {
-                throw new FailedToGetValidJobId();
+                throw new FailedToFindExistingIdInDb();
             }
             return Spec;
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            throw new FailedToFindExistingIdInDb();
-        } catch (DatabaseConnectionException e) {
+        } catch (SQLException | DatabaseConnectionException e) {
             System.err.println(e.getMessage());
             throw new DatabaseConnectionException();
         }
-    }
 
+    }
 }

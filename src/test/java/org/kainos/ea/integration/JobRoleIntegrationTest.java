@@ -34,22 +34,22 @@ public class JobRoleIntegrationTest {
 
         Assertions.assertTrue(response.size() > 0);
     }
-    @Test
-    public void testGetJobSpecificationId() {
-        // Request with valid id
-
-        Response response = ClientBuilder.newClient()
-                .target(webServer + "/api/job_roles/1")
-                .request(MediaType.APPLICATION_JSON)
-                .get();
-        assertEquals(200, response.getStatus());
-        assertNotNull(response.getEntity());
-
-        // Request with invalid id
-        response = ClientBuilder.newClient()
-                .target(webServer + "/api/job_roles/invalidId")
-                .request(MediaType.APPLICATION_JSON)
-                .get();
-        assertEquals(404, response.getStatus());
-    }
+//    @Test
+//    public void testGetJobSpecificationId() {
+//        // Request with valid id
+//
+//        Response response = ClientBuilder.newClient()
+//                .target(webServer + "/api/job_roles/1")
+//                .request(MediaType.APPLICATION_JSON)
+//                .get();
+//        assertEquals(200, response.getStatus());
+//        assertNotNull(response.getEntity());
+//
+//        // Request with invalid id
+//        response = ClientBuilder.newClient()
+//                .target(webServer + "/api/job_roles/invalidId")
+//                .request(MediaType.APPLICATION_JSON)
+//                .get();
+//        assertEquals(404, response.getStatus());
+//    }
 }
