@@ -2,12 +2,10 @@ package org.kainos.ea.controller;
 
 import io.swagger.annotations.Api;
 import org.kainos.ea.dao.JobRoleDao;
-import org.kainos.ea.exception.FailedToFindExistingIdInDb;
-import org.kainos.ea.exception.FailedToGetJobRolesException;
+import org.kainos.ea.exception.*;
 import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.dao.JobRoleDao;
 import org.kainos.ea.exception.FailedToGetJobRolesException;
-import org.kainos.ea.exception.FailedToGetValidJobId;
 import org.kainos.ea.service.JobRoleService;
 import org.kainos.ea.util.DatabaseConnector;
 
@@ -50,15 +48,19 @@ public class JobRoleController {
 
         try {
             return Response.ok(jobRoleService.getSpecificationById(id)).build();
-        } catch (FailedToGetValidJobId e) {
+        } catch (DatabaseConnectionException e) {
             System.err.println(e.getMessage());
 
             return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
         } catch (FailedToFindExistingIdInDb e){
-            System.err.println(e.getMessage());
+
 
             return Response.status(HttpStatus.NOT_FOUND_404).build();
-        }
-    }
+        }  catch (FailedToGetValidJobId e){
+            System.err.println(e.getMessage());
 
+            return Response.status(HttpStatus.BAD_REQUEST_400).build();
+        }
+
+    }
 }
