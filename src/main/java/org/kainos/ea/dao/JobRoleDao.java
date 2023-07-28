@@ -1,5 +1,6 @@
 package org.kainos.ea.dao;
 
+import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.model.JobRole;
 import org.kainos.ea.model.JobRoleRequest;
 
@@ -33,16 +34,40 @@ public class JobRoleDao {
 
     }
 
+    public int createJobRole(JobRoleRequest jobRole, Connection c) throws SQLException, DatabaseConnectionException {
+
+        String insertStatement = "INSERT INTO `JobRole` (`Name`, `Specification`, `BandID`, `CapabilityID`, `UrlLink`) VALUES (?, ?, ?, ?, ?)";
+
+        PreparedStatement st = c.prepareStatement(insertStatement, Statement.RETURN_GENERATED_KEYS);
+
+        st.setString(1, jobRole.getName());
+        st.setString(2, jobRole.getSpecification());
+        st.setInt(3, jobRole.getBandId());
+        st.setInt(4, jobRole.getCapabilityId());
+        st.setString(5, jobRole.getUrlLink());
+
+        st.executeUpdate();
+
+        ResultSet rs = st.getGeneratedKeys();
+
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+
+        return -1;
+    }
+
     public JobRoleRequest getJobRoleById(int id, Connection c) throws SQLException {
         Statement st = c.createStatement();
-        ResultSet rs = st.executeQuery("SELECT Name, Specification, BandID, CapabilityID FROM `JobRole` WHERE ID = " + id);
+        ResultSet rs = st.executeQuery("SELECT Name, Specification, BandID, CapabilityID, UrlLink FROM `JobRole` WHERE ID = " + id);
 
         while (rs.next()) {
             return new JobRoleRequest (
                     rs.getString("Name"),
                     rs.getString("Specification"),
                     rs.getInt("BandID"),
-                    rs.getInt("CapabilityID")
+                    rs.getInt("CapabilityID"),
+                    rs.getString("UrlLink")
             );
 
         }

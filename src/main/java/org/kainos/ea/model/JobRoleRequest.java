@@ -8,6 +8,15 @@ public class JobRoleRequest {
     private String specification;
     private int bandId;
     private int capabilityId;
+    private String urlLink;
+
+    public String getUrlLink() {
+        return urlLink;
+    }
+
+    public void setUrlLink(String urlLink) {
+        this.urlLink = urlLink;
+    }
 
     public int getBandId() {
         return bandId;
@@ -46,10 +55,12 @@ public class JobRoleRequest {
             @JsonProperty("name") String name,
             @JsonProperty("specification") String specification,
             @JsonProperty("bandId") int bandId,
-            @JsonProperty("capabilityId")int capabilityId){
+            @JsonProperty("capabilityId")int capabilityId,
+            @JsonProperty("urlLink") String urlLink){
         this.name = name;
         this.specification = specification;
         this.bandId = bandId;
         this.capabilityId = capabilityId;
+        this.urlLink = urlLink;
     }
 }
