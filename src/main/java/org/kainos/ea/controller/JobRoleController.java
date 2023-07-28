@@ -2,6 +2,7 @@ package org.kainos.ea.controller;
 
 import io.swagger.annotations.Api;
 import org.kainos.ea.dao.JobRoleDao;
+import org.kainos.ea.exception.FailedToFindExistingIdInDb;
 import org.kainos.ea.exception.FailedToGetJobRolesException;
 import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.dao.JobRoleDao;
@@ -53,6 +54,10 @@ public class JobRoleController {
             System.err.println(e.getMessage());
 
             return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+        } catch (FailedToFindExistingIdInDb e){
+            System.err.println(e.getMessage());
+
+            return Response.status(HttpStatus.NOT_FOUND_404).build();
         }
     }
 

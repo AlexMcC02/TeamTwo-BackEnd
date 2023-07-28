@@ -2,6 +2,7 @@ package org.kainos.ea.service;
 
 import org.kainos.ea.dao.JobRoleDao;
 import org.kainos.ea.exception.DatabaseConnectionException;
+import org.kainos.ea.exception.FailedToFindExistingIdInDb;
 import org.kainos.ea.exception.FailedToGetJobRolesException;
 import org.kainos.ea.exception.FailedToGetValidJobId;
 import org.kainos.ea.model.JobRole;
@@ -29,7 +30,7 @@ public class JobRoleService {
         }
     }
 
-    public JobRoleSpec getSpecificationById(int id) throws FailedToGetValidJobId {
+    public JobRoleSpec getSpecificationById(int id) throws FailedToGetValidJobId, FailedToFindExistingIdInDb, DatabaseConnectionException {
         if (id < 0) {
             throw new FailedToGetValidJobId();
         }
@@ -42,9 +43,10 @@ public class JobRoleService {
             return Spec;
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-            throw new FailedToGetValidJobId();
+            throw new FailedToFindExistingIdInDb();
         } catch (DatabaseConnectionException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
+            throw new DatabaseConnectionException();
         }
     }
 
