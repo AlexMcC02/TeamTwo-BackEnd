@@ -82,7 +82,7 @@ public class JobRoleServiceTest {
     }
     @Test
     void getSpecificationByIdShouldThrowFailedToFindExistingIdInDbForNonExistingId() throws FailedToGetValidJobId, FailedToFindExistingIdInDb, DatabaseConnectionException, SQLException {
-        int nonExistingId = 999;
+        int nonExistingId = 99999999;
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
         Mockito.when(jobRoleDao.getSpecificationById(nonExistingId, conn)).thenReturn(null);
 
