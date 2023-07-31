@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.DropwizardWebServiceApplication;
 import org.kainos.ea.DropwizardWebServiceConfiguration;
+import org.kainos.ea.exception.FailedToDeleteJobRoleException;
 import org.kainos.ea.exception.FailedToGetJobRolesException;
 import org.kainos.ea.model.JobRole;
 import org.kainos.ea.service.JobRoleService;
@@ -50,6 +51,23 @@ public class JobRoleControllerTest {
 
         Response response = jobRoleController.getAllJobRoles();
         assert (response.getStatus() == 500);
+    }
+
+    @Test
+    void deleteJobShouldReturnOkWhenServiceReturnsVoid() throws FailedToDeleteJobRoleException {
+        Mockito.doNothing().when(jobRoleService).deleteJobRole(jobRole.getId());
+
+        Response response = jobRoleController.deleteJobRole(jobRole.getId());
+        assert(response.getStatus() == 200);
+    }
+
+    @Test
+    void deleteJobRoleShouldReturnInternalServerErrorWhenServiceThrowsException() throws FailedToDeleteJobRoleException {
+
+        Mockito.doThrow(FailedToDeleteJobRoleException.class).when(jobRoleService).deleteJobRole(jobRole.getId());
+
+        Response response = jobRoleController.deleteJobRole(jobRole.getId());
+        assert(response.getStatus() == 500);
     }
 }
 

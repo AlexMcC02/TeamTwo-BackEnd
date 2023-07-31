@@ -10,6 +10,10 @@ import org.kainos.ea.DropwizardWebServiceApplication;
 import org.kainos.ea.DropwizardWebServiceConfiguration;
 import org.kainos.ea.model.JobRole;
 
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import java.util.List;
 
 @ExtendWith(DropwizardExtensionsSupport.class)
@@ -27,5 +31,15 @@ public class JobRoleIntegrationTest {
                 .get(List.class);
 
         Assertions.assertTrue(response.size() > 0);
+    }
+
+    @Test
+    void deleteJobRoleShouldReturnVoid() {
+        String url = System.getenv("API_URL") + "/api/job_roles/1";
+        Response response = APP.client().target(url)
+                .request()
+                .delete();
+
+        Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
 }
