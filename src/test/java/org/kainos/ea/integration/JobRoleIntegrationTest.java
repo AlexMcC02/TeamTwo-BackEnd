@@ -50,7 +50,7 @@ public class JobRoleIntegrationTest {
     void getJobSpecificationIdShouldReturnOkForValidId() throws DatabaseConnectionException, FailedToGetValidJobId, FailedToFindExistingIdInDb {
         int validId = 1;
         String url = System.getenv("API_URL") + "/api/job_roles/" + validId;
-        JobRoleSpec expectedSpec = new JobRoleSpec(validId, "Software Engineer", "Does coding.", "https://google.com");
+        JobRoleSpec expectedSpec = new JobRoleSpec(validId, "Bond James Bond", "Updated Job Specification", "https://google.com");
         Mockito.when(jobRoleService.getSpecificationById(validId)).thenReturn(expectedSpec);
 
         Response response = APP.client().target(url)
