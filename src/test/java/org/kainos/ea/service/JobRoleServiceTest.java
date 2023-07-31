@@ -1,6 +1,5 @@
 package org.kainos.ea.service;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.dao.JobRoleDao;
