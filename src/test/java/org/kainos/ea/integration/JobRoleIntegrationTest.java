@@ -36,7 +36,7 @@ public class JobRoleIntegrationTest {
     @Test
     void putJobRoleShouldReturnVoid() {
 
-        JobRoleRequest updatedJobRole = new JobRoleRequest("Bond James Bond", "Updated Job Specification", 1,1);
+        JobRoleRequest updatedJobRole = new JobRoleRequest("Bond James Bond", "Updated Job Specification", 1,1, "www.google.com");
 
         String url = System.getenv("API_URL") + "/api/job_roles/1";
         Response response = APP.client().target(url)

@@ -8,6 +8,7 @@ import org.kainos.ea.exception.FailedToGetJobRolesException;
 import org.kainos.ea.exception.FailedToUpdateJobRoleException;
 import org.kainos.ea.model.JobRole;
 import org.kainos.ea.model.JobRoleRequest;
+import org.kainos.ea.model.PureJobRole;
 import org.kainos.ea.util.DatabaseConnector;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -29,7 +30,8 @@ public class JobRoleServiceTest {
 
     Connection conn;
 
-    JobRoleRequest jobRoleRequest = new JobRoleRequest("Oppenheimer", "Nuclear Scientist", 4, 1);
+    JobRoleRequest jobRoleRequest = new JobRoleRequest("Oppenheimer", "Nuclear Scientist", 4, 1, "www.google.com");
+    PureJobRole pureJobRole = new PureJobRole(500, "Oppenheimer", "Nuclear Scientist", 4, 1, "www.google.com");
 
     @Test
     void getJobRolesShouldReturnListOfJobRolesWhenDaoReturnsListOfJobRoles() throws SQLException, FailedToGetJobRolesException, DatabaseConnectionException {
@@ -64,7 +66,7 @@ public class JobRoleServiceTest {
     @Test
     void putJobRoleShouldReturnNothingWhenDaoUpdatesJobRole() throws DatabaseConnectionException, SQLException {
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
-        Mockito.when(jobRoleDao.getJobRoleById(1, conn)).thenReturn(jobRoleRequest);
+        Mockito.when(jobRoleDao.getJobRoleById(1, conn)).thenReturn(pureJobRole);
         Mockito.doNothing().when(jobRoleDao).updateJobRole(1, jobRoleRequest, conn);
 
         assertDoesNotThrow(() -> jobRoleService.updateJobRole(1, jobRoleRequest));

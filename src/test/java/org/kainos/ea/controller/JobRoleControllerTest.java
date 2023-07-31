@@ -33,7 +33,7 @@ public class JobRoleControllerTest {
     JobRoleController jobRoleController = new JobRoleController(jobRoleService);
 
     JobRole jobRole = new JobRole(1, "Rocket Scientist", "Einstein-Tier", "Trainee", "Digital Services");
-    JobRoleRequest jobRoleRequest = new JobRoleRequest("Oppenheimer", "Nuclear Scientist", 4, 1);
+    JobRoleRequest jobRoleRequest = new JobRoleRequest("Oppenheimer", "Nuclear Scientist", 4, 1, "www.google.com");
 
     @Test
     void getJobRolesShouldReturnOKWhenServiceReturnsList() throws FailedToGetJobRolesException {
