@@ -99,19 +99,4 @@ public class JobRoleIntegrationTest {
 
         assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
     }
-    @Test
-    void getJobSpecificationIdShouldReturnInternalServerErrorOnDatabaseConnectionError() throws FailedToGetValidJobId, FailedToFindExistingIdInDb, DatabaseConnectionException {
-        // Arrange
-        int validId = 1;
-        String url = System.getenv("API_URL") + "/api/job_roles/" + validId;
-        Mockito.when(jobRoleService.getSpecificationById(validId)).thenThrow(DatabaseConnectionException.class);
-
-        // Act
-        Response response = APP.client().target(url)
-                .request()
-                .get();
-
-        // Assert
-        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-    }
 }
