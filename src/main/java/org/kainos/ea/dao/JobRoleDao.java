@@ -2,10 +2,7 @@ package org.kainos.ea.dao;
 
 import org.kainos.ea.model.JobRole;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,4 +28,11 @@ public class JobRoleDao {
 
     }
 
+    public void deleteJobRole(Connection c, int jobId) throws SQLException {
+        String deleteQuery = "DELETE FROM `JobRole` WHERE ID = ?";
+        try (PreparedStatement pst = c.prepareStatement(deleteQuery)) {
+            pst.setInt(1, jobId);
+            pst.executeUpdate();
+        }
+    }
 }
