@@ -3,9 +3,6 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-### idea folder ###
-.idea/
-
 *.iws
 *.iml
 *.ipr
@@ -38,3 +35,5 @@ build/
 ### Database Properties
 db.properties
 
+### idea folder ###
+.idea/

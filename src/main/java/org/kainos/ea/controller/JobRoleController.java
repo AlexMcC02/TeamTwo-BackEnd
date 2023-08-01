@@ -5,6 +5,7 @@ import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.exception.*;
 import org.kainos.ea.service.JobRoleService;
 import javax.ws.rs.*;
+import org.kainos.ea.exception.FailedToGetJobRolesException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;

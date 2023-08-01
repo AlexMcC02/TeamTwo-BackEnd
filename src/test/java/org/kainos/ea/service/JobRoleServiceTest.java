@@ -4,6 +4,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.dao.JobRoleDao;
 import org.kainos.ea.exception.*;
+import org.kainos.ea.exception.DatabaseConnectionException;
+import org.kainos.ea.exception.FailedToGetJobRolesException;
+import org.kainos.ea.exception.FailedToFindExistingIdInDb;
+import org.kainos.ea.exception.FailedToGetValidJobId;
 import org.kainos.ea.model.JobRole;
 import org.kainos.ea.model.JobRoleSpec;
 import org.kainos.ea.util.DatabaseConnector;
@@ -13,7 +17,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

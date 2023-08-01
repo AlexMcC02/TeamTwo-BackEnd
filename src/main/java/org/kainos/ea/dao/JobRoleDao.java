@@ -11,13 +11,16 @@ import java.util.List;
 import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.model.JobRoleSpec;
 
+import javax.ws.rs.HEAD;
+
 public class JobRoleDao {
 
     public List<JobRole> getAllJobRoles(Connection c) throws SQLException {
         Statement st = c.createStatement();
 
-        ResultSet rs = st.executeQuery("SELECT `JobRole`.ID, `JobRole`.Name, Specification, `Capability`.Name AS 'Capability' FROM `JobRole`" +
-                "INNER JOIN `Capability` ON `JobRole`.CapabilityID = `Capability`.ID;");
+        ResultSet rs = st.executeQuery("SELECT `JobRole`.ID, `JobRole`.Name, Specification, `BandLevel`.Name AS " +
+                "'Band Level', `Capability`.Name AS 'Capability' FROM `JobRole` INNER JOIN `Capability` ON " +
+                "`JobRole`.CapabilityID = `Capability`.ID INNER JOIN `BandLevel` ON `JobRole`.BandID = `BandLevel`.ID;");
 
         List<JobRole> jobRoleList = new ArrayList<>();
 
@@ -26,6 +29,7 @@ public class JobRoleDao {
                     rs.getInt("ID"),
                     rs.getString("Name"),
                     rs.getString("Specification"),
+                    rs.getString("Band Level"),
                     rs.getString("Capability")
             );
             jobRoleList.add(jobRole);
@@ -59,4 +63,5 @@ public class JobRoleDao {
         }
         return null;
     }
+
 }
