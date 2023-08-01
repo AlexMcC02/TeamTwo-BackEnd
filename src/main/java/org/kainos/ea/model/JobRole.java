@@ -12,6 +12,7 @@ public class JobRole {
         this.name = name;
         this.specification = specification;
         this.bandLevel = bandLevel;
+        this.capability = capability;
     }
 
     public JobRole() {}
