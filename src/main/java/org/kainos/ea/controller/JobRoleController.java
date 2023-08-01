@@ -75,6 +75,9 @@ public class JobRoleController {
         } catch (JobRoleDoesNotExistException | FailedToUpdateJobRoleException e) {
             System.err.println(e.getMessage());
             return Response.serverError().build();
+        } catch (InvalidJobRoleException e) {
+            System.err.println(e.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
 }

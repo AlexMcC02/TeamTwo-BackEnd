@@ -9,6 +9,7 @@ import org.kainos.ea.DropwizardWebServiceApplication;
 import org.kainos.ea.DropwizardWebServiceConfiguration;
 import org.kainos.ea.exception.FailedToGetJobRolesException;
 import org.kainos.ea.exception.FailedToUpdateJobRoleException;
+import org.kainos.ea.exception.InvalidJobRoleException;
 import org.kainos.ea.exception.JobRoleDoesNotExistException;
 import org.kainos.ea.model.JobRole;
 import org.kainos.ea.model.JobRoleRequest;
@@ -59,7 +60,7 @@ public class JobRoleControllerTest {
     }
 
     @Test
-    void updateJobShouldReturnOkWhenServiceReturnsVoid() throws FailedToUpdateJobRoleException, JobRoleDoesNotExistException {
+    void updateJobShouldReturnOkWhenServiceReturnsVoid() throws FailedToUpdateJobRoleException, JobRoleDoesNotExistException, InvalidJobRoleException {
         Mockito.doNothing().when(jobRoleService).updateJobRole(1, jobRoleRequest);
 
         Response response = jobRoleController.updateJobRole(1, jobRoleRequest);
@@ -67,7 +68,7 @@ public class JobRoleControllerTest {
     }
 
     @Test
-    void updateJobRoleShouldReturnInternalServerErrorWhenServiceThrowsException() throws FailedToUpdateJobRoleException, JobRoleDoesNotExistException {
+    void updateJobRoleShouldReturnInternalServerErrorWhenServiceThrowsException() throws FailedToUpdateJobRoleException, JobRoleDoesNotExistException, InvalidJobRoleException {
 
         Mockito.doThrow(FailedToUpdateJobRoleException.class).when(jobRoleService).updateJobRole(1, jobRoleRequest);
 

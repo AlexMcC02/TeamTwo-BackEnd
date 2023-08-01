@@ -66,8 +66,15 @@ public class JobRoleService {
         }
     }
 
-    public void updateJobRole(int id, JobRoleRequest jobRole) throws JobRoleDoesNotExistException, FailedToUpdateJobRoleException {
+    public void updateJobRole(int id, JobRoleRequest jobRole) throws JobRoleDoesNotExistException, FailedToUpdateJobRoleException, InvalidJobRoleException {
         try {
+
+            String validation = jobRoleValidator.isValidJobRole(jobRole);
+
+            if (validation != null) {
+                throw new InvalidJobRoleException(validation);
+            }
+
             PureJobRole jobRoleToUpdate = jobRoleDao.getJobRoleById(id, databaseConnector.getConnection());
 
             if (jobRoleToUpdate == null) {
