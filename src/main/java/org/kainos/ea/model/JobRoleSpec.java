@@ -1,18 +1,30 @@
 package org.kainos.ea.model;
 
-public class JobRole {
+
+public class JobRoleSpec {
     private int id;
     private String name;
     private String specification;
-    private String capability;
 
-    public JobRole() {}
+    public String getUrlLink() {
+        return urlLink;
+    }
 
-    public JobRole(int id, String name, String specification, String capability) {
+    public void setUrlLink(String urlLink) {
+        this.urlLink = urlLink;
+    }
+
+    private String urlLink;
+
+    public JobRoleSpec(int id, String name, String specification, String urlLink) {
         this.id = id;
         this.name = name;
         this.specification = specification;
-        this.capability = capability;
+        this.urlLink = urlLink;
+    }
+
+    public JobRoleSpec() {
+
     }
 
     public int getId() {
@@ -39,11 +51,4 @@ public class JobRole {
         this.specification = specification;
     }
 
-    public String getCapability() {
-        return capability;
-    }
-
-    public void setCapability(String capability) {
-        this.capability = capability;
-    }
 }
