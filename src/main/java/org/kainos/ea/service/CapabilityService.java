@@ -29,6 +29,9 @@ public class CapabilityService {
         } catch (SQLException e) {
             System.err.println(e.getMessage());
             throw new FailedToGetCapabilitiesException();
+        } catch (DatabaseConnectionException e) {
+            System.err.println(e.getMessage());
+            throw new FailedToGetCapabilitiesException();
         }
     }
 }
