@@ -12,10 +12,16 @@ public class JobRole {
         this.name = name;
         this.specification = specification;
         this.bandLevel = bandLevel;
-        this.capability = capability;
     }
 
     public JobRole() {}
+
+    public JobRole(int id, String name, String specification, String capability) {
+        this.id = id;
+        this.name = name;
+        this.specification = specification;
+        this.capability = capability;
+    }
 
     public int getId() {
         return id;
@@ -57,5 +63,3 @@ public class JobRole {
         this.capability = capability;
     }
 }
-
-

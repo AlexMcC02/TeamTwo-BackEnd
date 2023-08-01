@@ -1,13 +1,16 @@
 package org.kainos.ea.dao;
 
 import org.kainos.ea.model.JobRole;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import org.kainos.ea.exception.DatabaseConnectionException;
+import org.kainos.ea.model.JobRoleSpec;
+
+import javax.ws.rs.HEAD;
 
 public class JobRoleDao {
 
@@ -34,4 +37,22 @@ public class JobRoleDao {
         return jobRoleList;
 
     }
+
+    public JobRoleSpec getSpecificationById(int id, Connection c) throws SQLException, DatabaseConnectionException {
+
+        Statement st = c.createStatement();
+
+        ResultSet rs = st.executeQuery("SELECT ID, Name, Specification, UrlLink "
+                + " FROM JobRole WHERE ID =" + id + ";");
+        while (rs.next()) {
+            return new JobRoleSpec(
+                    rs.getInt("ID"),
+                    rs.getString("Name"),
+                    rs.getString("Specification"),
+                    rs.getString("UrlLink")
+            );
+        }
+        return null;
+    }
+
 }
