@@ -36,7 +36,7 @@ public class JobRoleControllerTest {
     JobRoleService jobRoleService = Mockito.mock(JobRoleService.class);
     JobRoleController jobRoleController = new JobRoleController(jobRoleService);
 
-    JobRole jobRole = new JobRole(1, "Rocket Scientist", "Einstein-Tier", "Digital Services");
+    JobRole jobRole = new JobRole(1, "Rocket Scientist", "Einstein-Tier", "Trainee", "Digital Services");
 
     @Test
     void getJobRolesShouldReturnOKWhenServiceReturnsList() throws FailedToGetJobRolesException {

@@ -10,6 +10,8 @@ import org.kainos.ea.exception.FailedToGetJobRolesException;
 import org.kainos.ea.exception.InvalidJobRoleException;
 import org.kainos.ea.model.JobRole;
 import org.kainos.ea.service.JobRoleService;
+import org.kainos.ea.exception.*;
+import org.eclipse.jetty.http.HttpStatus;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -27,6 +29,7 @@ public class JobRoleController {
     public JobRoleController(JobRoleService jobRoleService) {
         this.jobRoleService = jobRoleService;
     }
+
 
     @GET
     @Path("/job_roles")

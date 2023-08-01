@@ -47,6 +47,7 @@ public class JobRoleIntegrationTest {
 
         for (int i = 0; i < parsedResponse.size(); i++) {
             Assertions.assertNotNull(parsedResponse.get(i).getCapability());
+            Assertions.assertNotNull(parsedResponse.get(i).getBandLevel());
         }
         Assertions.assertTrue(response.size() > 0);
     }

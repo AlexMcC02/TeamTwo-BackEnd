@@ -8,6 +8,7 @@ import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.exception.FailedToFindExistingIdInDb;
 import org.kainos.ea.exception.FailedToCreateJobRoleException;
 import org.kainos.ea.exception.FailedToGetJobRolesException;
+import org.kainos.ea.exception.FailedToFindExistingIdInDb;
 import org.kainos.ea.exception.FailedToGetValidJobId;
 import org.kainos.ea.exception.InvalidJobRoleException;
 import org.kainos.ea.model.JobRole;
