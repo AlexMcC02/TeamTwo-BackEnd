@@ -33,10 +33,10 @@ public class JobRoleControllerTest {
     JobRoleService jobRoleService = Mockito.mock(JobRoleService.class);
     JobRoleController jobRoleController = new JobRoleController(jobRoleService);
 
-    JobRole jobRole = new JobRole(1, "Rocket Scientist", "Einstein-Tier");
+    JobRole jobRole = new JobRole(1, "Rocket Scientist", "Einstein-Tier", "Digital Services");
 
     @Test
-    void getJobRoles_shouldReturnOK_whenServiceReturnsList() throws FailedToGetJobRolesException {
+    void getJobRolesShouldReturnOKWhenServiceReturnsList() throws FailedToGetJobRolesException {
 
         List<JobRole> sampleJobRoles = new ArrayList<>();
         sampleJobRoles.add(jobRole);
@@ -50,15 +50,16 @@ public class JobRoleControllerTest {
     }
 
     @Test
-    void getJobRoles_shouldReturnInternalServerError_whenServiceThrowsException() throws FailedToGetJobRolesException {
+    void getJobRolesShouldReturnInternalServerErrorWhenServiceThrowsException() throws FailedToGetJobRolesException {
 
         Mockito.when(jobRoleService.getAllJobRoles()).thenThrow(FailedToGetJobRolesException.class);
 
         Response response = jobRoleController.getAllJobRoles();
         assert (response.getStatus() == 500);
     }
+
     @Test
-    void getJobSpecificationIdShouldReturnOkForValidId() throws  DatabaseConnectionException, FailedToGetValidJobId, FailedToFindExistingIdInDb {
+    void getJobSpecificationIdShouldReturnOkForValidId() throws DatabaseConnectionException, FailedToGetValidJobId, FailedToFindExistingIdInDb {
         int validId = 1;
         JobRoleSpec expectedSpec = new JobRoleSpec(validId, "Software Engineer", "Does coding.", "https://google.com");
         Mockito.when(jobRoleService.getSpecificationById(validId)).thenReturn(expectedSpec);
@@ -96,4 +97,3 @@ public class JobRoleControllerTest {
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
     }
 }
-

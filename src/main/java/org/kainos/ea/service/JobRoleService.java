@@ -45,6 +45,5 @@ public class JobRoleService {
             System.err.println(e.getMessage());
             throw new DatabaseConnectionException();
         }
-
     }
 }
