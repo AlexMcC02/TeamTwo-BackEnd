@@ -17,6 +17,7 @@ CREATE TABLE `JobRole` (
 `Specification` VARCHAR(100),
 `BandID` VARCHAR(30),
 `CapabilityID` SMALLINT unsigned,
+`UrlLink` VARCHAR(100),
 PRIMARY KEY (`ID`),
 FOREIGN KEY `CapabilityID` REFERENCES `Capability`.`ID`,
 FOREIGN KEY `CapabilityID` REFERENCES `Capability`.`ID`
