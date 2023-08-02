@@ -1,3 +1,6 @@
+swagger:
+  resourcePackage: org.kainos.ea.controller
+
 logging:
   level: INFO
   loggers:
