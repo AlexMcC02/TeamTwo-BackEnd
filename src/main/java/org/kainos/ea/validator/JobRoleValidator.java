@@ -5,15 +5,15 @@ import org.kainos.ea.cli.JobRoleRequest;
 public class JobRoleValidator {
     public String isValidJobRole(JobRoleRequest jobRole) {
         if (jobRole.getName() == null || jobRole.getName().isEmpty()) {
-            return "Name cannot be null or empty";
+            return "Name cannot be null or empty.";
         }
 
         if (jobRole.getName().length() > 50) {
-            return "Name greater than 50 characters";
+            return "Name greater than 50 characters.";
         }
 
-        if (jobRole.getSpecification().length()> 100) {
-            return "Specification less than 100 characters";
+        if (jobRole.getSpecification().length() > 250) {
+            return "Specification more than 250 characters.";
         }
          return null;
     }
