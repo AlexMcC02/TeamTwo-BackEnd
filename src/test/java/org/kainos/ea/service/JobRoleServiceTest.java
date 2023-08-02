@@ -5,16 +5,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.dao.JobRoleDao;
 import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.exception.FailedToGetJobRolesException;
+import org.kainos.ea.exception.FailedToFindExistingIdInDb;
+import org.kainos.ea.exception.FailedToGetValidJobId;
 import org.kainos.ea.model.JobRole;
+import org.kainos.ea.model.JobRoleSpec;
 import org.kainos.ea.util.DatabaseConnector;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -58,4 +59,39 @@ public class JobRoleServiceTest {
 
     }
 
+    @Test
+    void getSpecificationByIdShouldReturnJobRoleSpecForValidId() throws FailedToGetValidJobId, FailedToFindExistingIdInDb, DatabaseConnectionException, SQLException {
+        int validId = 1;
+        JobRoleSpec expectedSpec = new JobRoleSpec(validId, "Software Engineer", "Does coding.", "https://google.com");
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+        Mockito.when(jobRoleDao.getSpecificationById(validId, conn)).thenReturn(expectedSpec);
+
+        JobRoleSpec resultSpec = jobRoleService.getSpecificationById(validId);
+
+        assertEquals(expectedSpec, resultSpec);
+    }
+    @Test
+    void getSpecificationByIdShouldThrowFailedToGetValidJobIdForNegativeId() {
+        int invalidId = -1;
+
+        assertThrows(FailedToGetValidJobId.class,
+                () -> jobRoleService.getSpecificationById(invalidId));
+    }
+    @Test
+    void getSpecificationByIdShouldThrowFailedToFindExistingIdInDbForNonExistingId() throws DatabaseConnectionException, SQLException {
+        int nonExistingId = 99999999;
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+        Mockito.when(jobRoleDao.getSpecificationById(nonExistingId, conn)).thenReturn(null);
+
+        assertThrows(FailedToFindExistingIdInDb.class,
+                () -> jobRoleService.getSpecificationById(nonExistingId));
+    }
+    @Test
+    void getSpecificationByIdShouldThrowDatabaseConnectionExceptionOnDatabaseConnectionError() throws DatabaseConnectionException, SQLException {
+        int validId = 123;
+        Mockito.when(databaseConnector.getConnection()).thenThrow(DatabaseConnectionException.class);
+
+        assertThrows(DatabaseConnectionException.class,
+                () -> jobRoleService.getSpecificationById(validId));
+    }
 }
