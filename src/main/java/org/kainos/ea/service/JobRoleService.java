@@ -2,14 +2,10 @@ package org.kainos.ea.service;
 
 import org.kainos.ea.cli.JobRoleRequest;
 import org.kainos.ea.dao.JobRoleDao;
-import org.kainos.ea.exception.FailedToCreateJobRoleException;
-import org.kainos.ea.exception.DatabaseConnectionException;
-import org.kainos.ea.exception.FailedToFindExistingIdInDb;
-import org.kainos.ea.exception.FailedToGetJobRolesException;
-import org.kainos.ea.exception.InvalidJobRoleException;
-import org.kainos.ea.exception.FailedToGetValidJobId;
+import org.kainos.ea.exception.*;
 import org.kainos.ea.model.JobRole;
 import org.kainos.ea.model.JobRoleSpec;
+import org.kainos.ea.model.PureJobRole;
 import org.kainos.ea.util.DatabaseConnector;
 import org.kainos.ea.validator.JobRoleValidator;
 
@@ -72,6 +68,41 @@ public class JobRoleService {
         } catch (SQLException | DatabaseConnectionException e) {
             System.err.println(e.getMessage());
             throw new DatabaseConnectionException();
+        }
+    }
+
+    public PureJobRole getJobRoleById(int id) throws JobRoleDoesNotExistException, FailedToGetJobRolesException {
+        try {
+            PureJobRole jobRole = jobRoleDao.getJobRoleById(id, databaseConnector.getConnection());
+            if (jobRole == null) {
+                throw new JobRoleDoesNotExistException();
+            }
+            return jobRole;
+        } catch(SQLException | DatabaseConnectionException e) {
+            System.err.println(e.getMessage());
+            throw new FailedToGetJobRolesException();
+        }
+    }
+
+    public void updateJobRole(int id, JobRoleRequest jobRole) throws JobRoleDoesNotExistException, FailedToUpdateJobRoleException, InvalidJobRoleException {
+        try {
+
+            String validation = jobRoleValidator.isValidJobRole(jobRole);
+
+            if (validation != null) {
+                throw new InvalidJobRoleException(validation);
+            }
+
+            PureJobRole jobRoleToUpdate = jobRoleDao.getJobRoleById(id, databaseConnector.getConnection());
+
+            if (jobRoleToUpdate == null) {
+                throw new JobRoleDoesNotExistException();
+            }
+
+            jobRoleDao.updateJobRole(id, jobRole, databaseConnector.getConnection());
+        } catch(SQLException | DatabaseConnectionException e) {
+            System.err.println(e);
+            throw new FailedToUpdateJobRoleException();
         }
     }
 }

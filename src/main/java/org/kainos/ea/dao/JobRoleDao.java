@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import org.kainos.ea.model.PureJobRole;
 import org.kainos.ea.util.DatabaseConnector;
 
 import java.io.FileInputStream;
@@ -64,6 +66,25 @@ public class JobRoleDao {
         }
         return null;
     }
+
+    public PureJobRole getJobRoleById(int id, Connection c) throws SQLException {
+        Statement st = c.createStatement();
+        ResultSet rs = st.executeQuery("SELECT ID, Name, Specification, BandID, CapabilityID, UrlLink FROM `JobRole` WHERE ID = " + id);
+
+        while (rs.next()) {
+            return new PureJobRole (
+                    rs.getInt("ID"),
+                    rs.getString("Name"),
+                    rs.getString("Specification"),
+                    rs.getInt("BandID"),
+                    rs.getInt("CapabilityID"),
+                    rs.getString("UrlLink")
+            );
+
+        }
+        return null;
+    }
+
     public int createJobRole(JobRoleRequest jobRole) throws SQLException, DatabaseConnectionException {
         Connection c = databaseConnector.getConnection();
 
@@ -86,6 +107,23 @@ public class JobRoleDao {
         }
 
         return -1;
+    }
+
+    public void updateJobRole(int id, JobRoleRequest jobRole, Connection c) throws SQLException {
+
+        String updateStatement = "UPDATE `JobRole` SET Name = ?, Specification = ?, BandID = ?, CapabilityID = ?, UrlLink = ? WHERE `JobRole`.ID = ?";
+
+        PreparedStatement st = c.prepareStatement(updateStatement);
+
+        st.setString(1, jobRole.getName());
+        st.setString(2, jobRole.getSpecification());
+        st.setInt(3, jobRole.getBandId());
+        st.setInt(4, jobRole.getCapabilityId());
+        st.setString(5, jobRole.getUrlLink());
+        st.setInt(6, id);
+
+        st.executeUpdate();
+
     }
 
 }

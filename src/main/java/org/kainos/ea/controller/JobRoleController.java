@@ -2,21 +2,13 @@ package org.kainos.ea.controller;
 
 import io.swagger.annotations.Api;
 import org.kainos.ea.cli.JobRoleRequest;
-import org.kainos.ea.dao.JobRoleDao;
 import org.kainos.ea.exception.FailedToCreateJobRoleException;
 import org.kainos.ea.exception.*;
 import org.eclipse.jetty.http.HttpStatus;
 import org.kainos.ea.exception.FailedToGetJobRolesException;
 import org.kainos.ea.exception.InvalidJobRoleException;
-import org.kainos.ea.model.JobRole;
 import org.kainos.ea.service.JobRoleService;
-import org.kainos.ea.exception.*;
-import org.eclipse.jetty.http.HttpStatus;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -60,7 +52,6 @@ public class JobRoleController {
 
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-
     }
 
     @GET
@@ -85,4 +76,22 @@ public class JobRoleController {
         }
 
     }
+
+    @PUT
+    @Path("/job_roles/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateJobRole(@PathParam("id") int id, JobRoleRequest jobRole) {
+
+        try {
+            jobRoleService.updateJobRole(id, jobRole);
+            return Response.ok().build();
+        } catch (JobRoleDoesNotExistException | FailedToUpdateJobRoleException e) {
+            System.err.println(e.getMessage());
+            return Response.serverError().build();
+        } catch (InvalidJobRoleException e) {
+            System.err.println(e.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+    }
+
 }
