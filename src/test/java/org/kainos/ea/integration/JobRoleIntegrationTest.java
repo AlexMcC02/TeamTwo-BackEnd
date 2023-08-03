@@ -11,16 +11,19 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.DropwizardWebServiceApplication;
 import org.kainos.ea.DropwizardWebServiceConfiguration;
 import org.kainos.ea.controller.JobRoleController;
-import org.kainos.ea.exception.FailedToDeleteJobRoleException;
-import org.kainos.ea.exception.FailedToFindExistingIdInDb;
+import org.kainos.ea.exception.*;
 import org.kainos.ea.model.JobRole;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.kainos.ea.model.JobRoleSpec;
+import org.kainos.ea.model.PureJobRole;
 import org.kainos.ea.service.JobRoleService;
 import org.mockito.Mockito;
 import java.util.List;
-import org.kainos.ea.exception.DatabaseConnectionException;
-import org.kainos.ea.exception.FailedToGetValidJobId;
+
+import org.kainos.ea.model.JobRoleRequest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(DropwizardExtensionsSupport.class)
@@ -32,6 +35,7 @@ public class JobRoleIntegrationTest {
 
     JobRoleService jobRoleService = Mockito.mock(JobRoleService.class);
     JobRoleController jobRoleController = new JobRoleController(jobRoleService);
+    JobRoleRequest testJobRole = new JobRoleRequest("Software Engineer", "Makes and breaks stuff", 1, 1, "https://www.wikipedia.org/");
 
     @Test
     void getJobRolesShouldReturnListOfJobRoles() {
@@ -53,13 +57,17 @@ public class JobRoleIntegrationTest {
 
     @Test
     void deleteJobRoleShouldReturnVoid() {
-        int validId = 1;
-        String url = System.getenv("API_URL") + "/api/job_roles/" + validId;
-        Response response = APP.client().target(url)
-                .request()
-                .delete();
+        try {
+            jobRoleService.createJobRole(testJobRole);
+        } catch (FailedToCreateJobRoleException e) {
+            throw new RuntimeException(e);
+        }
 
-        Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        Response response = APP.client().target("http://localhost:8080/api/job_roles")
+                .request()
+                .post(Entity.entity(testJobRole, MediaType.APPLICATION_JSON_TYPE));
+
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
 
     @Test

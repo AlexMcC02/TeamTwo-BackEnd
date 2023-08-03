@@ -9,8 +9,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import org.kainos.ea.exception.DatabaseConnectionException;
+import org.kainos.ea.model.JobRoleRequest;
 import org.kainos.ea.model.JobRoleSpec;
 import org.kainos.ea.model.PureJobRole;
+import org.kainos.ea.util.DatabaseConnector;
 
 import javax.ws.rs.HEAD;
 
@@ -38,6 +40,31 @@ public class JobRoleDao {
 
         return jobRoleList;
 
+    }
+
+    public int createJobRole(JobRoleRequest jobRole) throws SQLException, DatabaseConnectionException {
+        DatabaseConnector databaseConnector = new DatabaseConnector();
+        Connection c = databaseConnector.getConnection();
+
+        String insertStatement = "INSERT INTO `JobRole` (`Name`, `Specification`, `BandID`, `CapabilityID`, `UrlLink`) VALUES (?, ?, ?, ?, ?)";
+
+        PreparedStatement st = c.prepareStatement(insertStatement, Statement.RETURN_GENERATED_KEYS);
+
+        st.setString(1, jobRole.getName());
+        st.setString(2, jobRole.getSpecification());
+        st.setInt(3, jobRole.getBandId());
+        st.setInt(4, jobRole.getCapabilityId());
+        st.setString(5, jobRole.getUrlLink());
+
+        st.executeUpdate();
+
+        ResultSet rs = st.getGeneratedKeys();
+
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+
+        return -1;
     }
 
     public void deleteJobRole(Connection c, int jobId) throws SQLException {

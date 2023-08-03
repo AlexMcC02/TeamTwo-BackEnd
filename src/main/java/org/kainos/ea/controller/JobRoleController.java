@@ -38,6 +38,19 @@ public class JobRoleController {
         }
     }
 
+    @POST
+    @Path("/job_roles")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createJobRole(org.kainos.ea.model.JobRoleRequest jobRole) {
+        try {
+            return Response.ok(jobRoleService.createJobRole(jobRole)).build();
+        } catch (FailedToCreateJobRoleException e) {
+            System.err.println(e.getMessage());
+
+            return Response.serverError().build();
+        }
+    }
+
     @DELETE
     @Path("/job_roles/{id}")
     @Produces(MediaType.APPLICATION_JSON)
