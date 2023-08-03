@@ -9,8 +9,11 @@ import org.kainos.ea.DropwizardWebServiceApplication;
 import org.kainos.ea.DropwizardWebServiceConfiguration;
 import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.exception.FailedToFindExistingIdInDb;
+import org.kainos.ea.cli.JobRoleRequest;
+import org.kainos.ea.exception.FailedToCreateJobRoleException;
 import org.kainos.ea.exception.FailedToGetJobRolesException;
 import org.kainos.ea.exception.FailedToGetValidJobId;
+import org.kainos.ea.exception.InvalidJobRoleException;
 import org.kainos.ea.model.JobRole;
 import org.kainos.ea.model.JobRoleSpec;
 import org.kainos.ea.service.JobRoleService;
@@ -57,6 +60,54 @@ public class JobRoleControllerTest {
         Response response = jobRoleController.getAllJobRoles();
         assert (response.getStatus() == 500);
     }
+
+
+    @Test
+    void createJobRoles_shouldReturnOK_whenServiceCreatesJobRole() throws FailedToCreateJobRoleException, InvalidJobRoleException, InvalidJobRoleException, FailedToCreateJobRoleException {
+
+        JobRoleRequest jobRoleRequest = new JobRoleRequest(
+                "CEO",
+                "Being the bossman",
+                1,
+                1,
+                "www.google.com");
+        Mockito.when(jobRoleService.createJobRole(jobRoleRequest)).thenReturn(jobRole.getId());
+
+        Response response = jobRoleController.createJobRole(jobRoleRequest);
+        assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    void createJobRoles_shouldReturnBadRequest_whenServiceThrowsInvalidJobRoleException() throws FailedToCreateJobRoleException, InvalidJobRoleException {
+
+        JobRoleRequest invalidJobRoleRequest = new JobRoleRequest(
+                null,
+                "Being the bossman",
+                1,
+                1,
+                "www.google.com");
+
+        Mockito.when(jobRoleService.createJobRole(invalidJobRoleRequest)).thenThrow(InvalidJobRoleException.class);
+
+        Response response = jobRoleController.createJobRole(invalidJobRoleRequest);
+        assertEquals(400, response.getStatus());
+    }
+
+    @Test
+    void createJobRoles_shouldReturnInternalServerError_whenServiceThrowsFailedToCreateJobRoleException() throws FailedToCreateJobRoleException, InvalidJobRoleException {
+
+        JobRoleRequest jobRoleRequest = new JobRoleRequest(
+                "CEO",
+                "Being the bossman",
+                1,
+                1,
+                "www.google.com");
+        Mockito.when(jobRoleService.createJobRole(jobRoleRequest)).thenThrow(FailedToCreateJobRoleException.class);
+
+        Response response = jobRoleController.createJobRole(jobRoleRequest);
+        assertEquals(500, response.getStatus());
+    }
+
 
     @Test
     void getJobSpecificationIdShouldReturnOkForValidId() throws DatabaseConnectionException, FailedToGetValidJobId, FailedToFindExistingIdInDb {

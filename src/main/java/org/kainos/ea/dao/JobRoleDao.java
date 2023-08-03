@@ -1,18 +1,28 @@
 package org.kainos.ea.dao;
 
+import org.kainos.ea.cli.JobRoleRequest;
+import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.model.JobRole;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import org.kainos.ea.util.DatabaseConnector;
+
+import java.io.FileInputStream;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.model.JobRoleSpec;
+import java.util.Properties;
 
 import javax.ws.rs.HEAD;
 
 public class JobRoleDao {
+
+    private DatabaseConnector databaseConnector = new DatabaseConnector();
+
 
     public List<JobRole> getAllJobRoles(Connection c) throws SQLException {
         Statement st = c.createStatement();
@@ -53,6 +63,60 @@ public class JobRoleDao {
             );
         }
         return null;
+    }
+    public int createJobRole(JobRoleRequest jobRole) throws SQLException, DatabaseConnectionException {
+        Connection c = databaseConnector.getConnection();
+
+        String insertStatement = "INSERT INTO `JobRole` (`Name`, `Specification`, `BandID`, `CapabilityID`, `UrlLink`) VALUES (?, ?, ?, ?, ?)";
+
+        PreparedStatement st = c.prepareStatement(insertStatement, Statement.RETURN_GENERATED_KEYS);
+
+        st.setString(1, jobRole.getName());
+        st.setString(2, jobRole.getSpecification());
+        st.setInt(3, jobRole.getBandId());
+        st.setInt(4, jobRole.getCapabilityId());
+        st.setString(5, jobRole.getUrlLink());
+
+        st.executeUpdate();
+
+        ResultSet rs = st.getGeneratedKeys();
+
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+
+        return -1;
+    }
+
+
+    //methods below are for validation
+    public ArrayList<Integer> getAllCapabilityIds(Connection c) throws SQLException {
+        Statement st = c.createStatement();
+
+        ResultSet rs = st.executeQuery("SELECT ID FROM Capability;");
+
+        ArrayList<Integer> capabilityIds = new ArrayList<>();
+
+        while (rs.next()) {
+            capabilityIds.add(rs.getInt(1));
+        }
+
+        return capabilityIds;
+
+    }
+
+    public ArrayList<Integer> getAllBandIds(Connection c) throws SQLException {
+        Statement st = c.createStatement();
+
+        ResultSet rs = st.executeQuery("SELECT ID FROM BandLevel;");
+
+        ArrayList<Integer> bandIds = new ArrayList<>();
+
+        while (rs.next()) {
+            bandIds.add(rs.getInt(1));
+        }
+
+        return bandIds;
     }
 
 }

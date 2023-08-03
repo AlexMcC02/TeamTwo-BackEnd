@@ -2,11 +2,14 @@ package org.kainos.ea.service;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.kainos.ea.cli.JobRoleRequest;
 import org.kainos.ea.dao.JobRoleDao;
 import org.kainos.ea.exception.DatabaseConnectionException;
-import org.kainos.ea.exception.FailedToGetJobRolesException;
 import org.kainos.ea.exception.FailedToFindExistingIdInDb;
+import org.kainos.ea.exception.FailedToCreateJobRoleException;
+import org.kainos.ea.exception.FailedToGetJobRolesException;
 import org.kainos.ea.exception.FailedToGetValidJobId;
+import org.kainos.ea.exception.InvalidJobRoleException;
 import org.kainos.ea.model.JobRole;
 import org.kainos.ea.model.JobRoleSpec;
 import org.kainos.ea.util.DatabaseConnector;
@@ -58,6 +61,68 @@ public class JobRoleServiceTest {
                 () -> jobRoleService.getAllJobRoles());
 
     }
+
+    @Test
+    void createJobRoleShouldReturnIdWhenDaoCreatesJobRole() throws SQLException, FailedToCreateJobRoleException, InvalidJobRoleException, DatabaseConnectionException {
+        JobRoleRequest jobRoleRequest = new JobRoleRequest(
+                "CEO",
+                "Running the show",
+                1,
+                1,
+                "www.google.com");
+
+        int expectedId = 1;
+
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+        Mockito.when(jobRoleDao.createJobRole(jobRoleRequest)).thenReturn(expectedId);
+
+        int resultId = jobRoleService.createJobRole(jobRoleRequest);
+
+        assertEquals(expectedId, resultId);
+    }
+
+    @Test
+    void createJobRoleShouldThrowFailedToCreateJobRoleExceptionWhenDaoReturnsMinusOne() throws SQLException, DatabaseConnectionException, InvalidJobRoleException {
+        JobRoleRequest jobRoleRequest = new JobRoleRequest(
+                "CEO",
+                "Running the show",
+                1,
+                1,
+                "www.google.com");
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+        Mockito.when(jobRoleDao.createJobRole(jobRoleRequest)).thenReturn(-1);
+
+        assertThrows(FailedToCreateJobRoleException.class,
+                () -> jobRoleService.createJobRole(jobRoleRequest));
+    }
+
+    @Test
+    void createJobRoleShouldThrowInvalidJobRoleExceptionWhenJobRoleRequestIsInvalid() throws SQLException, DatabaseConnectionException, FailedToCreateJobRoleException {
+        JobRoleRequest invalidJobRoleRequest = new JobRoleRequest(
+                null,
+                "Running the show",
+                1,
+                1,
+                "www.google.com");
+        assertThrows(InvalidJobRoleException.class,
+                () -> jobRoleService.createJobRole(invalidJobRoleRequest));
+    }
+
+    @Test
+    void createJobRoleShouldThrowFailedToCreateJobRoleExceptionWhenDaoThrowsSQLException() throws SQLException, DatabaseConnectionException, InvalidJobRoleException {
+        JobRoleRequest jobRoleRequest = new JobRoleRequest(
+                "CEO",
+                "Running the show",
+                1,
+                1,
+                "www.google.com");
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+        Mockito.when(jobRoleDao.createJobRole(jobRoleRequest)).thenThrow(SQLException.class);
+
+        assertThrows(FailedToCreateJobRoleException.class,
+                () -> jobRoleService.createJobRole(jobRoleRequest));
+    }
+
 
     @Test
     void getSpecificationByIdShouldReturnJobRoleSpecForValidId() throws FailedToGetValidJobId, FailedToFindExistingIdInDb, DatabaseConnectionException, SQLException {
