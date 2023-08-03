@@ -3,8 +3,6 @@ name: Docker Image CI
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
 
@@ -34,7 +32,7 @@ jobs:
         DB_NAME: ${{ secrets.DB_NAME }}
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: employee_demo
-        IMAGE_TAG: team-too-api
+        IMAGE_TAG: team2-api
       run: |
         docker build --build-arg DB_PASSWORD=${DB_PASSWORD} --build-arg DB_USER=${DB_USER} --build-arg DB_HOST=${DB_HOST} --build-arg DB_NAME=${DB_NAME} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
