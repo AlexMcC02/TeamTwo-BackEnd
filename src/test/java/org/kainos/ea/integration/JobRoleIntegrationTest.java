@@ -11,17 +11,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.DropwizardWebServiceApplication;
 import org.kainos.ea.DropwizardWebServiceConfiguration;
 import org.kainos.ea.controller.JobRoleController;
+import org.kainos.ea.exception.FailedToDeleteJobRoleException;
 import org.kainos.ea.exception.FailedToFindExistingIdInDb;
 import org.kainos.ea.model.JobRole;
+import javax.ws.rs.core.Response;
 import org.kainos.ea.model.JobRoleSpec;
 import org.kainos.ea.service.JobRoleService;
 import org.mockito.Mockito;
 import java.util.List;
 import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.exception.FailedToGetValidJobId;
-
-import javax.ws.rs.core.Response;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(DropwizardExtensionsSupport.class)
@@ -53,6 +52,29 @@ public class JobRoleIntegrationTest {
     }
 
     @Test
+    void deleteJobRoleShouldReturnVoid() {
+        int validId = 1;
+        String url = System.getenv("API_URL") + "/api/job_roles/" + validId;
+        Response response = APP.client().target(url)
+                .request()
+                .delete();
+
+        Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+    }
+
+    @Test
+    void deleteJobRoleShouldReturnNotFoundForNonExistingId() throws FailedToDeleteJobRoleException, FailedToFindExistingIdInDb, DatabaseConnectionException {
+        int nonExistingId = 999;
+        String url = System.getenv("API_URL") + "/api/job_roles/" + nonExistingId;
+        Mockito.doThrow(FailedToFindExistingIdInDb.class).when(jobRoleService).deleteJobRole(nonExistingId);
+
+        Response response = APP.client().target(url)
+                .request()
+                .get();
+
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+    }
+
     void getJobSpecificationIdShouldReturnOkForValidId() throws DatabaseConnectionException, FailedToGetValidJobId, FailedToFindExistingIdInDb {
         int validId = 1;
         String url = System.getenv("API_URL") + "/api/job_roles/" + validId;
@@ -68,8 +90,8 @@ public class JobRoleIntegrationTest {
 
         // Assert that the ID of the spec returned is the same as the one requested in the URL
         assertEquals(expectedSpec.getId(), returnedSpec.getId());
-
     }
+
     @Test
     void getJobSpecificationIdShouldReturnBadRequestForNegativeId() throws FailedToGetValidJobId, FailedToFindExistingIdInDb, DatabaseConnectionException {
         int invalidId = -1;

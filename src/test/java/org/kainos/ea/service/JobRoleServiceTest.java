@@ -3,6 +3,7 @@ package org.kainos.ea.service;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.dao.JobRoleDao;
+import org.kainos.ea.exception.*;
 import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.exception.FailedToGetJobRolesException;
 import org.kainos.ea.exception.FailedToFindExistingIdInDb;
@@ -16,6 +17,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -60,6 +62,31 @@ public class JobRoleServiceTest {
     }
 
     @Test
+    void deleteJobRoleShouldReturnNothingWhenDaoDeletesJobRole() throws DatabaseConnectionException, SQLException {
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+        Mockito.doNothing().when(jobRoleDao).deleteJobRole(conn, 1);
+
+        assertDoesNotThrow(() -> jobRoleService.deleteJobRole(1));
+    }
+
+    @Test
+    void deleteJobRoleShouldThrowFailedToDeleteJobRoleExceptionWhenDaoThrowsDatabaseConnectionException() throws DatabaseConnectionException, SQLException {
+        Mockito.when(databaseConnector.getConnection()).thenThrow(DatabaseConnectionException.class);
+
+        assertThrows(FailedToDeleteJobRoleException.class,
+                () -> jobRoleService.deleteJobRole(1));
+    }
+
+    @Test
+    void deleteJobRoleShouldThrowFailedToFindExistingIdInDbForNonExistingId() throws DatabaseConnectionException, SQLException {
+        int nonExistingId = 99999999;
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+        Mockito.doNothing().when(jobRoleDao).deleteJobRole(conn, nonExistingId);
+
+        assertThrows(FailedToFindExistingIdInDb.class,
+                () -> jobRoleService.deleteJobRole(nonExistingId));
+    }
+
     void getSpecificationByIdShouldReturnJobRoleSpecForValidId() throws FailedToGetValidJobId, FailedToFindExistingIdInDb, DatabaseConnectionException, SQLException {
         int validId = 1;
         JobRoleSpec expectedSpec = new JobRoleSpec(validId, "Software Engineer", "Does coding.", "https://google.com");
