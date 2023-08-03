@@ -88,4 +88,35 @@ public class JobRoleDao {
         return -1;
     }
 
+
+    //methods below are for validation
+    public List<Integer> getAllCapabilityIds(Connection c) throws SQLException {
+        Statement st = c.createStatement();
+
+        ResultSet rs = st.executeQuery("SELECT ID FROM Capability;");
+
+        List<Integer> capabilityIds = new ArrayList<>();
+
+        while (rs.next()) {
+            capabilityIds.add(rs.getInt(1));
+        }
+
+        return capabilityIds;
+
+    }
+
+    public List<Integer> getAllBandIds(Connection c) throws SQLException {
+        Statement st = c.createStatement();
+
+        ResultSet rs = st.executeQuery("SELECT ID FROM BandLevel;");
+
+        List<Integer> bandIds = new ArrayList<>();
+
+        while (rs.next()) {
+            bandIds.add(rs.getInt(1));
+        }
+
+        return bandIds;
+    }
+
 }
