@@ -4,6 +4,7 @@ import org.kainos.ea.dao.JobRoleDao;
 import org.kainos.ea.exception.*;
 import org.kainos.ea.model.JobRole;
 import org.kainos.ea.model.JobRoleSpec;
+import org.kainos.ea.model.PureJobRole;
 import org.kainos.ea.util.DatabaseConnector;
 import java.sql.SQLException;
 import java.util.List;
@@ -26,9 +27,13 @@ public class JobRoleService {
         }
     }
 
-    public void deleteJobRole(int jobId) throws FailedToDeleteJobRoleException {
+    public void deleteJobRole(int jobId) throws FailedToDeleteJobRoleException, FailedToFindExistingIdInDb {
         try {
             jobRoleDao.deleteJobRole(databaseConnector.getConnection(), jobId);
+            PureJobRole jobRole = jobRoleDao.getJobRoleById(jobId, databaseConnector.getConnection());
+            if (jobRole == null) {
+                throw new FailedToFindExistingIdInDb();
+            }
         } catch (SQLException | DatabaseConnectionException e) {
             System.err.println(e.getMessage());
             throw new FailedToDeleteJobRoleException();

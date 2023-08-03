@@ -55,7 +55,7 @@ public class JobRoleControllerTest {
     }
 
     @Test
-    void deleteJobShouldReturnOkWhenServiceReturnsVoid() throws FailedToDeleteJobRoleException {
+    void deleteJobShouldReturnOkWhenServiceReturnsVoid() throws FailedToDeleteJobRoleException, FailedToFindExistingIdInDb {
         Mockito.doNothing().when(jobRoleService).deleteJobRole(jobRole.getId());
 
         Response response = jobRoleController.deleteJobRole(jobRole.getId());
@@ -63,7 +63,7 @@ public class JobRoleControllerTest {
     }
 
     @Test
-    void deleteJobRoleShouldReturnInternalServerErrorWhenServiceThrowsException() throws FailedToDeleteJobRoleException {
+    void deleteJobRoleShouldReturnInternalServerErrorWhenServiceThrowsException() throws FailedToDeleteJobRoleException, FailedToFindExistingIdInDb {
 
         Mockito.doThrow(FailedToDeleteJobRoleException.class).when(jobRoleService).deleteJobRole(jobRole.getId());
 

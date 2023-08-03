@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.model.JobRoleSpec;
+import org.kainos.ea.model.PureJobRole;
 
 import javax.ws.rs.HEAD;
 
@@ -60,6 +61,24 @@ public class JobRoleDao {
                     rs.getString("Specification"),
                     rs.getString("UrlLink")
             );
+        }
+        return null;
+    }
+
+    public PureJobRole getJobRoleById(int id, Connection c) throws SQLException {
+        Statement st = c.createStatement();
+        ResultSet rs = st.executeQuery("SELECT ID, Name, Specification, BandID, CapabilityID, UrlLink FROM `JobRole` WHERE ID = " + id);
+
+        while (rs.next()) {
+            return new PureJobRole (
+                    rs.getInt("ID"),
+                    rs.getString("Name"),
+                    rs.getString("Specification"),
+                    rs.getInt("BandID"),
+                    rs.getInt("CapabilityID"),
+                    rs.getString("UrlLink")
+            );
+
         }
         return null;
     }

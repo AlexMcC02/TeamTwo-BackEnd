@@ -77,6 +77,16 @@ public class JobRoleServiceTest {
                 () -> jobRoleService.deleteJobRole(1));
     }
 
+    @Test
+    void deleteJobRoleShouldThrowFailedToFindExistingIdInDbForNonExistingId() throws DatabaseConnectionException, SQLException {
+        int nonExistingId = 99999999;
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+        Mockito.doNothing().when(jobRoleDao).deleteJobRole(conn, nonExistingId);
+
+        assertThrows(FailedToFindExistingIdInDb.class,
+                () -> jobRoleService.deleteJobRole(nonExistingId));
+    }
+
     void getSpecificationByIdShouldReturnJobRoleSpecForValidId() throws FailedToGetValidJobId, FailedToFindExistingIdInDb, DatabaseConnectionException, SQLException {
         int validId = 1;
         JobRoleSpec expectedSpec = new JobRoleSpec(validId, "Software Engineer", "Does coding.", "https://google.com");

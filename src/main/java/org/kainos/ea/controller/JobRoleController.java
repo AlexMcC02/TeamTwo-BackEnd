@@ -44,10 +44,12 @@ public class JobRoleController {
     public Response deleteJobRole(@PathParam("id") int jobId) {
         try {
             jobRoleService.deleteJobRole(jobId);
-            return Response.ok("Job Role Deleted Successfully.").build();
+            return Response.ok().build();
         } catch (FailedToDeleteJobRoleException e) {
             System.err.println(e.getMessage());
             return Response.serverError().build();
+        } catch (FailedToFindExistingIdInDb e){
+            return Response.status(HttpStatus.NOT_FOUND_404).build();
         }
     }
 

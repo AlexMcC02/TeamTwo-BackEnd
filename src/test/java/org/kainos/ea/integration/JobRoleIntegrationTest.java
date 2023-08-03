@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.DropwizardWebServiceApplication;
 import org.kainos.ea.DropwizardWebServiceConfiguration;
 import org.kainos.ea.controller.JobRoleController;
+import org.kainos.ea.exception.FailedToDeleteJobRoleException;
 import org.kainos.ea.exception.FailedToFindExistingIdInDb;
 import org.kainos.ea.model.JobRole;
 import javax.ws.rs.core.Response;
@@ -52,12 +53,26 @@ public class JobRoleIntegrationTest {
 
     @Test
     void deleteJobRoleShouldReturnVoid() {
-        String url = System.getenv("API_URL") + "/api/job_roles/1";
+        int validId = 1;
+        String url = System.getenv("API_URL") + "/api/job_roles/" + validId;
         Response response = APP.client().target(url)
                 .request()
                 .delete();
 
         Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+    }
+
+    @Test
+    void deleteJobRoleShouldReturnNotFoundForNonExistingId() throws FailedToDeleteJobRoleException, FailedToFindExistingIdInDb, DatabaseConnectionException {
+        int nonExistingId = 999;
+        String url = System.getenv("API_URL") + "/api/job_roles/" + nonExistingId;
+        Mockito.doThrow(FailedToFindExistingIdInDb.class).when(jobRoleService).deleteJobRole(nonExistingId);
+
+        Response response = APP.client().target(url)
+                .request()
+                .get();
+
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
     }
 
     void getJobSpecificationIdShouldReturnOkForValidId() throws DatabaseConnectionException, FailedToGetValidJobId, FailedToFindExistingIdInDb {
