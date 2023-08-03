@@ -3,7 +3,10 @@ package org.kainos.ea.validator;
 import org.junit.jupiter.api.Test;
 import org.kainos.ea.cli.JobRoleRequest;
 import org.kainos.ea.dao.JobRoleDao;
+import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.util.DatabaseConnector;
+
+import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -13,10 +16,10 @@ public class JobRoleValidatorTest {
     DatabaseConnector databaseConnector = new DatabaseConnector();
     JobRoleDao jobRoleDao = new JobRoleDao();
 
-    JobRoleValidator jobRoleValidator = new JobRoleValidator(jobRoleDao, databaseConnector);
+    JobRoleValidator jobRoleValidator = new JobRoleValidator();
 
     @Test
-    public void isValidJobRoleShouldReturnTrueWhenValidEmployee() {
+    public void isValidJobRoleShouldReturnTrueWhenValidEmployee() throws DatabaseConnectionException, SQLException {
         JobRoleRequest jobRoleRequest = new JobRoleRequest(
                 "Alex McCullough",
                 "This is a specification that is of a sensible length.",
@@ -28,7 +31,7 @@ public class JobRoleValidatorTest {
     }
 
     @Test
-    public void isValidJobRoleShouldReturnNameIsTooShortWhenNameIsEmpty() {
+    public void isValidJobRoleShouldReturnNameIsTooShortWhenNameIsEmpty() throws DatabaseConnectionException, SQLException {
         JobRoleRequest jobRoleRequest = new JobRoleRequest(
                 "",
                 "This is a specification that is of a sensible length.",
@@ -40,7 +43,7 @@ public class JobRoleValidatorTest {
     }
 
     @Test
-    public void isValidJobRoleShouldReturnNameIsTooLongWhenNameIsTooLong() {
+    public void isValidJobRoleShouldReturnNameIsTooLongWhenNameIsTooLong() throws DatabaseConnectionException, SQLException {
         JobRoleRequest jobRoleRequest = new JobRoleRequest(
                 "Alex McCullough Alex McCullough Alex McCullough Alex McCullough Alex McCullough Alex McCullough",
                 "This is a specification that is of a sensible length.",
@@ -53,7 +56,7 @@ public class JobRoleValidatorTest {
 
 
     @Test
-    public void isValidJobRoleShouldReturnSpecificationIsTooLongWhenSpecificationIsTooLong() {
+    public void isValidJobRoleShouldReturnSpecificationIsTooLongWhenSpecificationIsTooLong() throws DatabaseConnectionException, SQLException {
         JobRoleRequest jobRoleRequest = new JobRoleRequest(
                 "Alex McCullough",
                 "This is a specification that is of a not sensible length. This is a specification that " +
@@ -70,7 +73,7 @@ public class JobRoleValidatorTest {
     }
 
     @Test
-    public void isValidJobRoleShouldReturnCapabilityDoesNotExistWhenCapabilityDoesNotExist() {
+    public void isValidJobRoleShouldReturnCapabilityDoesNotExistWhenCapabilityDoesNotExist() throws DatabaseConnectionException, SQLException {
         JobRoleRequest jobRoleRequest = new JobRoleRequest(
                 "Alex McCullough",
                 "This is a specification that is of a sensible length.",
@@ -82,7 +85,7 @@ public class JobRoleValidatorTest {
     }
 
     @Test
-    public void isValidJobRoleShouldReturnBandDoesNotExistWhenBandDoesNotExist() {
+    public void isValidJobRoleShouldReturnBandDoesNotExistWhenBandDoesNotExist() throws DatabaseConnectionException, SQLException {
         JobRoleRequest jobRoleRequest = new JobRoleRequest(
                 "Alex McCullough",
                 "This is a specification that is of a sensible length.",

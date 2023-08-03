@@ -24,7 +24,7 @@ public class JobRoleService {
     public JobRoleService(JobRoleDao jobRoleDao, DatabaseConnector databaseConnector) {
         this.jobRoleDao = jobRoleDao;
         this.databaseConnector = databaseConnector;
-        jobRoleValidator = new JobRoleValidator(jobRoleDao, databaseConnector);
+        jobRoleValidator = new JobRoleValidator();
     }
 
     public List<JobRole> getAllJobRoles() throws FailedToGetJobRolesException {

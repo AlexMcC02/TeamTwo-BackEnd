@@ -5,31 +5,20 @@ import org.kainos.ea.dao.JobRoleDao;
 import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.util.DatabaseConnector;
 
+import javax.xml.crypto.Data;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class JobRoleValidator {
-    private DatabaseConnector databaseConnector;
-    private JobRoleDao jobRoleDao;
 
-    private ArrayList<Integer> capabilityIds;
-    private ArrayList<Integer> bandIds;
+    DatabaseConnector databaseConnector = new DatabaseConnector();
+    JobRoleDao jobRoleDao = new JobRoleDao();
 
-    public JobRoleValidator(JobRoleDao jobRoleDao, DatabaseConnector databaseConnector) {
-        this.jobRoleDao = jobRoleDao;
-        this.databaseConnector = databaseConnector;
+    public String isValidJobRole(JobRoleRequest jobRole) throws DatabaseConnectionException, SQLException {
 
-        {
-            try {
-                capabilityIds = jobRoleDao.getAllCapabilityIds(databaseConnector.getConnection());
-                bandIds = jobRoleDao.getAllBandIds(databaseConnector.getConnection());
-            } catch (SQLException | DatabaseConnectionException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
+        ArrayList<Integer> capabilityIds = jobRoleDao.getAllCapabilityIds(databaseConnector.getConnection());
+        ArrayList<Integer> bandIds = jobRoleDao.getAllBandIds(databaseConnector.getConnection());
 
-    public String isValidJobRole(JobRoleRequest jobRole) {
         if (jobRole.getName() == null || jobRole.getName().isEmpty()) {
             return "Name cannot be null or empty.";
         }
@@ -43,10 +32,12 @@ public class JobRoleValidator {
         }
 
         if (!capabilityIds.contains(jobRole.getCapabilityId())) {
+            System.out.println(capabilityIds);
             return "CapabilityID doesn't exist.";
         }
 
         if (!bandIds.contains(jobRole.getBandId())) {
+            System.out.println(bandIds);
             return "BandID doesn't exist.";
         }
 
