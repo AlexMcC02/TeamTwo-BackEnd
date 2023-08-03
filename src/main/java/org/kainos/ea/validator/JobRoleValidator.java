@@ -32,12 +32,10 @@ public class JobRoleValidator {
         }
 
         if (!capabilityIds.contains(jobRole.getCapabilityId())) {
-            System.out.println(capabilityIds);
             return "CapabilityID doesn't exist.";
         }
 
         if (!bandIds.contains(jobRole.getBandId())) {
-            System.out.println(bandIds);
             return "BandID doesn't exist.";
         }
 
