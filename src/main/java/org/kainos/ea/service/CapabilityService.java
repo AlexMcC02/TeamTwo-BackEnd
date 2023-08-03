@@ -26,10 +26,7 @@ public class CapabilityService {
     public List<Capability> getAllCapabilities() throws FailedToGetCapabilitiesException, DatabaseConnectionException {
         try {
             return capabilityDao.getAllCapabilities(databaseConnector.getConnection());
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            throw new FailedToGetCapabilitiesException();
-        } catch (DatabaseConnectionException e) {
+        } catch (SQLException | DatabaseConnectionException e) {
             System.err.println(e.getMessage());
             throw new FailedToGetCapabilitiesException();
         }

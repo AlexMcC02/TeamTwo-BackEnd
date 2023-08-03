@@ -11,15 +11,10 @@ import java.sql.Statement;
 import org.kainos.ea.model.PureJobRole;
 import org.kainos.ea.util.DatabaseConnector;
 
-import java.io.FileInputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.model.JobRoleSpec;
-import java.util.Properties;
-
-import javax.ws.rs.HEAD;
 
 public class JobRoleDao {
 
@@ -126,4 +121,31 @@ public class JobRoleDao {
 
     }
 
+    public ArrayList<Integer> getAllCapabilityIds(Connection c) throws SQLException {
+        Statement st = c.createStatement();
+
+        ResultSet rs = st.executeQuery("SELECT ID FROM Capability;");
+
+        ArrayList<Integer> capabilityIds = new ArrayList<>();
+
+        while (rs.next()) {
+            capabilityIds.add(rs.getInt(1));
+        }
+
+        return capabilityIds;
+    }
+
+    public ArrayList<Integer> getAllBandIds(Connection c) throws SQLException {
+        Statement st = c.createStatement();
+
+        ResultSet rs = st.executeQuery("SELECT ID FROM BandLevel;");
+
+        ArrayList<Integer> bandIds = new ArrayList<>();
+
+        while (rs.next()) {
+            bandIds.add(rs.getInt(1));
+        }
+
+        return bandIds;
+    }
 }
