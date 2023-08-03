@@ -1,14 +1,12 @@
-package org.kainos.ea.validation;
+package org.kainos.ea.validator;
 
 import org.junit.jupiter.api.Test;
 import org.kainos.ea.cli.JobRoleRequest;
-import org.kainos.ea.cli.JobRoleRequest;
-import org.kainos.ea.validator.JobRoleValidator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class JobRoleValidationTest {
+public class JobRoleValidatorTest {
 
     JobRoleValidator jobRoleValidator = new JobRoleValidator();
 
