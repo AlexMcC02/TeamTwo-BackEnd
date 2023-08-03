@@ -19,11 +19,12 @@ import java.util.List;
 public class JobRoleService {
     public JobRoleDao jobRoleDao;
     public DatabaseConnector databaseConnector;
-    private JobRoleValidator jobRoleValidator = new JobRoleValidator();
+    public JobRoleValidator jobRoleValidator;
 
     public JobRoleService(JobRoleDao jobRoleDao, DatabaseConnector databaseConnector) {
         this.jobRoleDao = jobRoleDao;
         this.databaseConnector = databaseConnector;
+        jobRoleValidator = new JobRoleValidator(jobRoleDao, databaseConnector);
     }
 
     public List<JobRole> getAllJobRoles() throws FailedToGetJobRolesException {

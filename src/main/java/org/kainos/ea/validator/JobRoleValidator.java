@@ -10,36 +10,48 @@ import java.util.ArrayList;
 
 public class JobRoleValidator {
     private DatabaseConnector databaseConnector;
+    private JobRoleDao jobRoleDao;
 
-//    public JobRoleValidator(DatabaseConnector databaseConnector) {
-//        this.databaseConnector = databaseConnector;
-//        JobRoleDao jobRoleDao = new JobRoleDao();
-//        DatabaseConnector databaseConnector = new DatabaseConnector();
-//        ArrayList<Integer> capabilityIds = jobRoleDao.getAllCapabilityIds(DatabaseConnector);
-//        ArrayList<Integer> bandIds = new ArrayList();
-//    }
+    private ArrayList<Integer> capabilityIds;
+    private ArrayList<Integer> bandIds;
 
-    ArrayList<Integer> capabilityIds = jobRoleDao.getAllCapabilityIds(databaseConnector.getConnection());
+    public JobRoleValidator(JobRoleDao jobRoleDao, DatabaseConnector databaseConnector) {
+        this.jobRoleDao = jobRoleDao;
+        this.databaseConnector = databaseConnector;
 
-    public JobRoleValidator() throws DatabaseConnectionException, SQLException {
+        {
+            try {
+                capabilityIds = jobRoleDao.getAllCapabilityIds(databaseConnector.getConnection());
+                bandIds = jobRoleDao.getAllBandIds(databaseConnector.getConnection());
+            } catch (SQLException | DatabaseConnectionException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
-
 
     public String isValidJobRole(JobRoleRequest jobRole) {
         if (jobRole.getName() == null || jobRole.getName().isEmpty()) {
-            return "Name cannot be null or empty";
+            return "Name cannot be null or empty.";
         }
 
         if (jobRole.getName().length() > 50) {
-            return "Name greater than 50 characters";
+            return "Name exceeds limit of 50 characters.";
         }
 
-        if (jobRole.getSpecification().length()> 100) {
-            return "Specification less than 100 characters";
+        if (jobRole.getSpecification().length() > 250) {
+            return "Specification exceeds limit of 250 characters.";
         }
 
-        if (capabilityIds) {}
-         return null;
+        if (!capabilityIds.contains(jobRole.getCapabilityId())) {
+            return "CapabilityID doesn't exist.";
+        }
+
+        if (!bandIds.contains(jobRole.getBandId())) {
+            return "BandID doesn't exist.";
+        }
+
+        return null;
+
     }
 
 }
