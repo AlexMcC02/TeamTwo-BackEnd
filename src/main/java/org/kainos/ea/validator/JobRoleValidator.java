@@ -5,7 +5,6 @@ import org.kainos.ea.dao.JobRoleDao;
 import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.util.DatabaseConnector;
 
-import javax.xml.crypto.Data;
 import java.sql.SQLException;
 import java.util.ArrayList;
 

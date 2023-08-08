@@ -7,13 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.DropwizardWebServiceApplication;
 import org.kainos.ea.DropwizardWebServiceConfiguration;
-import org.kainos.ea.exception.DatabaseConnectionException;
-import org.kainos.ea.exception.FailedToFindExistingIdInDb;
+import org.kainos.ea.exception.*;
 import org.kainos.ea.cli.JobRoleRequest;
-import org.kainos.ea.exception.FailedToCreateJobRoleException;
-import org.kainos.ea.exception.FailedToGetJobRolesException;
-import org.kainos.ea.exception.FailedToGetValidJobId;
-import org.kainos.ea.exception.InvalidJobRoleException;
 import org.kainos.ea.model.JobRole;
 import org.kainos.ea.model.JobRoleSpec;
 import org.kainos.ea.service.JobRoleService;
@@ -37,6 +32,7 @@ public class JobRoleControllerTest {
     JobRoleController jobRoleController = new JobRoleController(jobRoleService);
 
     JobRole jobRole = new JobRole(1, "Rocket Scientist", "Einstein-Tier", "Trainee", "Digital Services");
+    JobRoleRequest jobRoleRequest = new JobRoleRequest("Oppenheimer", "Nuclear Scientist", 4, 1, "www.google.com");
 
     @Test
     void getJobRolesShouldReturnOKWhenServiceReturnsList() throws FailedToGetJobRolesException {
@@ -147,4 +143,22 @@ public class JobRoleControllerTest {
 
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
     }
+
+    @Test
+    void updateJobShouldReturnOkWhenServiceReturnsVoid() throws FailedToUpdateJobRoleException, JobRoleDoesNotExistException, InvalidJobRoleException {
+        Mockito.doNothing().when(jobRoleService).updateJobRole(1, jobRoleRequest);
+
+        Response response = jobRoleController.updateJobRole(1, jobRoleRequest);
+        assert(response.getStatus() == 200);
+    }
+
+    @Test
+    void updateJobRoleShouldReturnInternalServerErrorWhenServiceThrowsException() throws FailedToUpdateJobRoleException, JobRoleDoesNotExistException, InvalidJobRoleException {
+
+        Mockito.doThrow(FailedToUpdateJobRoleException.class).when(jobRoleService).updateJobRole(1, jobRoleRequest);
+
+        Response response = jobRoleController.updateJobRole(1, jobRoleRequest);
+        assert(response.getStatus() == 500);
+    }
+
 }

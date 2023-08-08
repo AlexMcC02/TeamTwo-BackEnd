@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kainos.ea.DropwizardWebServiceApplication;
 import org.kainos.ea.DropwizardWebServiceConfiguration;
+import org.kainos.ea.cli.JobRoleRequest;
 import org.kainos.ea.controller.JobRoleController;
 import org.kainos.ea.exception.FailedToFindExistingIdInDb;
 import org.kainos.ea.model.JobRole;
@@ -20,6 +21,8 @@ import java.util.List;
 import org.kainos.ea.exception.DatabaseConnectionException;
 import org.kainos.ea.exception.FailedToGetValidJobId;
 
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -105,4 +108,24 @@ public class JobRoleIntegrationTest {
 
         assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
     }
+
+    @Test
+    void putJobRoleShouldReturnVoid() {
+
+        JobRoleRequest updatedJobRole = new JobRoleRequest("Bond James Bond", "Updated Job Specification", 1,1, "www.google.com");
+
+        String url = System.getenv("API_URL") + "/api/job_roles/1";
+        Response response = APP.client().target(url)
+                .request()
+                .put(Entity.entity(updatedJobRole, MediaType.APPLICATION_JSON_TYPE));
+
+        Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+
+        JobRoleRequest fetchedUpdatedJobRole = APP.client().target(url)
+                .request()
+                .get(JobRoleRequest.class);
+
+        Assertions.assertEquals(updatedJobRole.getName(), fetchedUpdatedJobRole.getName());
+    }
+
 }
